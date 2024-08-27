@@ -25,6 +25,7 @@ public class PostController : BaseController
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
     [HttpGet("{postId}")]
+    [Authorize]
     public async Task<IActionResult> GetPostById([FromRoute] Guid postId)
     {
         var result = await _mediator.Send(new GetPostByIdQuery
@@ -33,5 +34,27 @@ public class PostController : BaseController
         });
         var response = _mapper.Map<PostResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+    }
+    [HttpDelete("DeletePost/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> Delete([FromRoute] Guid postId)
+    {
+        var result = await _mediator.Send(new DeletePostCommand
+        {
+            Id = postId
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+    [HttpPatch("UpdatePost/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> UpdatePost([FromRoute] Guid postId,[FromBody] PostUpdate postUpdate)
+    {
+        var result = await _mediator.Send(new UpdatePostCommand
+        {
+            Id = postId,
+            Title = postUpdate.Title,
+            Content = postUpdate.Content
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 }

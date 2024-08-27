@@ -6,13 +6,12 @@ using MediatR;
 
 namespace Application.Posts.CommandHandler;
 
-public class DeletePostHandler(ApplicationDbContext dbContext)
-    : IRequestHandler<DeletePostCommand, OperationResult<bool>>
+public class UpdatePostHandler(ApplicationDbContext dbContext)
+    : IRequestHandler<UpdatePostCommand, OperationResult<bool>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private OperationResult<bool> _result = new();
-
-    public async Task<OperationResult<bool>> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -22,11 +21,9 @@ public class DeletePostHandler(ApplicationDbContext dbContext)
             if (result == null)
             {
                 _result.AddError(ErrorCode.NotFound, "Post Not Found");
-
                 return _result;
             }
-
-            _dbContext.Posts.RemoveRange(result);
+            result.UpdatePost(request.Title, request.Content);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
             return _result;

@@ -58,6 +58,11 @@ public sealed class User : IdentityUser<Guid>
 
         throw exception;
     }
+    
+    public void AddBasicInfo(BasicInfo basicInfo)
+    {
+        BasicInfo = basicInfo;
+    }
 
     public void UpdateBasicInfo(BasicInfo basicInfo)
     {

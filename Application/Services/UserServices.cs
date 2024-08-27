@@ -30,12 +30,25 @@ public class UserServices(
         return Task.CompletedTask;
     }
 
-    public async Task<User?> UpdateUser(Guid id, string userName, string email)
+    public async Task<User?> UpdateUserName(Guid id, string userName)
     {
         var user = await GetUserById(id);
         if (user != null)
         {
             user.UserName = userName;
+            dbContext.Users.Update(user);
+            await dbContext.SaveChangesAsync();
+            return user;
+        }
+
+        return user;
+    }
+
+    public async Task<User?> UpdateEmail(Guid id, string email)
+    {
+        var user = await GetUserById(id);
+        if (user != null)
+        {
             user.Email = email;
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();

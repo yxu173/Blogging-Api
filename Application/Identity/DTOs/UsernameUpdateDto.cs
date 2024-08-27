@@ -1,7 +1,6 @@
 ﻿namespace Application.Identity.DTOs;
 
-public class UserUpdateDto
+public class UsernameUpdateDto
 {
     public required string UserName { get; set; }
-    public required string Email { get; set; }
 }

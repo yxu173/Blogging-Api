@@ -63,4 +63,9 @@ public sealed class Post : BaseAuditableEntity
     {
         Content = content;
     }
+    public void UpdatePost(string title,string content)
+    {
+        Title = title;
+        Content = content;
+    }
 }

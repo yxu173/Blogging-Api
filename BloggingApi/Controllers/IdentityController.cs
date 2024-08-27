@@ -3,6 +3,7 @@ using Application.Identity.Commands;
 using Application.Identity.DTOs;
 using Application.Identity.Query;
 using BloggingApi.Contracts.Identity;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,19 +84,68 @@ public class IdentityController : BaseController
     }
 
     [HttpPost]
-    [Route(ApiRoute.User.UpdateUser)]
+    [Route(ApiRoute.User.UpdateUsername)]
     [Authorize]
-    public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto userUpdateDto)
+    public async Task<IActionResult> UpdateUsername([FromBody] UsernameUpdateDto usernameUpdateDto)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
-        var result = await _mediator.Send(new UpdateUserCommand
+        var result = await _mediator.Send(new UpdateUserNameCommand
         {
             Id = id,
-            UserName = userUpdateDto.UserName,
-            Email = userUpdateDto.Email
+            UserName = usernameUpdateDto.UserName
         });
-        var response = _mapper.Map<UserUpdate>(result.Payload);
+        var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
+    [HttpPost]
+    [Route(ApiRoute.User.UpdateEmail)]
+    [Authorize]
+    public async Task<IActionResult> UpdateUserEmail([FromBody] EmailUpdateDto emailUpdateDto)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+        var id = Guid.Parse(userId.Value);
+        var result = await _mediator.Send(new UpdateEmailCommand()
+        {
+            Id = id,
+            EmailAddress = emailUpdateDto.EmailAddress
+        });
+        var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+    }
+
+    [HttpPost]
+    [Route(ApiRoute.User.CreateProfile)]
+    [Authorize]
+    public async Task<IActionResult> CreateProfile([FromBody] ProfileDto basicInfo)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+        var id = Guid.Parse(userId.Value);
+        var result = await _mediator.Send(new CreateUserProfileCommand
+        {
+            Id = id,
+            Bio = basicInfo.Bio,
+            ProfileImage = basicInfo.ProfileImage,
+            SocialMediaLinks = basicInfo.SocialMediaLinks
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpPost]
+    [Route(ApiRoute.User.UpdateProfile)]
+    [Authorize]
+    public async Task<IActionResult> UpdateProfile([FromBody] ProfileDto basicInfo)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+        var id = Guid.Parse(userId.Value);
+        var result = await _mediator.Send(new UpdateUserProfileCommand
+        {
+            Id = id,
+            Bio = basicInfo.Bio,
+            ProfileImage = basicInfo.ProfileImage,
+            SocialMediaLinks = basicInfo.SocialMediaLinks
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+    
 }

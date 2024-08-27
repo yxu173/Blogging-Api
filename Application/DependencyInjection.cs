@@ -15,7 +15,6 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
         services.AddScoped<UserServices>();
-        //services.AddScoped<SignInManager<User>>();
         services.AddScoped<JwtSettings>();
         services.AddScoped<PostServices>();
         var jwtSettings = new JwtSettings();

@@ -12,14 +12,17 @@ public static class ApiRoute
         public const string DeleteUser = "DeleteUser";
         public const string GetByUserName = "GetByUserName";
         public const string GetById = "GetById";
-        public const string UpdateUser = "UpdateUser";
+        public const string UpdateUsername = "UpdateUsername";
+        public const string UpdateEmail = "UpdateEmail";
+        public const string CreateProfile = "CreateProfile";
+        public const string UpdateProfile = "UpdateProfile";
     }
 
     public static class Post
     {
         public const string CreatePost = "CreatePost";
-        public const string Get = "Get";
-        public const string Update = "Update";
+        public const string GetPostById = "GetPostById";
+        public const string UpdatePost = "UpdatePost";
         public const string Delete = "Delete";
     }
 }

@@ -4,9 +4,8 @@ using MediatR;
 
 namespace Application.Identity.Commands;
 
-public class UpdateUserCommand : IRequest<OperationResult<UserUpdateDto>>
+public class UpdateUserNameCommand : IRequest<OperationResult<UsernameUpdateDto>>
 {
     public required Guid Id { get; set; }
     public required string UserName { get; set; }
-    public required string Email { get; set; }
 }

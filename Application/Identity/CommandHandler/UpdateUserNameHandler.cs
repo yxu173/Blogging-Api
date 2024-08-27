@@ -9,20 +9,20 @@ using MediatR;
 
 namespace Application.Identity.CommandHandler;
 
-public class UpdateUserHandler(UserServices userService, IMapper mapper)
-    : IRequestHandler<UpdateUserCommand, OperationResult<UserUpdateDto>>
+public class UpdateUserNameHandler(UserServices userService, IMapper mapper)
+    : IRequestHandler<UpdateUserNameCommand, OperationResult<UsernameUpdateDto>>
 {
     private readonly UserServices _userService = userService;
     private IMapper _mapper = mapper;
-    private OperationResult<UserUpdateDto> _result = new();
+    private OperationResult<UsernameUpdateDto> _result = new();
 
-    public async Task<OperationResult<UserUpdateDto>> Handle(UpdateUserCommand request,
+    public async Task<OperationResult<UsernameUpdateDto>> Handle(UpdateUserNameCommand request,
         CancellationToken cancellationToken)
     {
         try
         {
             var result = await _userService
-                .UpdateUser(request.Id, request.UserName, request.Email);
+                .UpdateUserName(request.Id, request.UserName);
 
             if (result == null)
             {
@@ -31,7 +31,7 @@ public class UpdateUserHandler(UserServices userService, IMapper mapper)
                 return _result;
             }
 
-            _result.Payload = _mapper.Map<UserUpdateDto>(result);
+            _result.Payload = _mapper.Map<UsernameUpdateDto>(result);
             return _result;
         }
         catch (Exception e)

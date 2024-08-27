@@ -16,11 +16,12 @@ public class IdentityProfile : Profile
                 opt =>
                     opt.MapFrom(src => src.Email));
 
-        CreateMap<User, UserUpdateDto>()
+        CreateMap<User, UsernameUpdateDto>()
             .ForMember(des => des.UserName,
                 opt =>
-                    opt.MapFrom(src => src.UserName))
-            .ForMember(des => des.Email,
+                    opt.MapFrom(src => src.UserName));
+        CreateMap<User, EmailUpdateDto>()
+            .ForMember(des => des.EmailAddress,
                 opt =>
                     opt.MapFrom(src => src.Email));
     }
