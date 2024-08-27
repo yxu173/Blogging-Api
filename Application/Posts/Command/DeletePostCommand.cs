@@ -6,4 +6,5 @@ namespace Application.Posts.Command;
 public class DeletePostCommand : IRequest<OperationResult<bool>>
 {
     public Guid Id { get; set; }
+    public Guid UserId { get; set; }
 }

@@ -11,6 +11,7 @@ public sealed class Comment : BaseAuditableEntity
     private Comment()
     {
         Id = Guid.NewGuid();
+        CreatedAt = DateTime.Now.ToUniversalTime();
     }
 
     public Guid UserId { get; private set; }
@@ -44,5 +45,11 @@ public sealed class Comment : BaseAuditableEntity
             .ToList()
             .ForEach(x => exception.ValidationErrors.Add(x.ErrorMessage));
         throw exception;
+    }
+
+    public void UpdateComment(string content)
+    {
+        Content = content;
+        UpdatedAt = DateTime.Now.ToUniversalTime();
     }
 }

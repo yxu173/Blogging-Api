@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingApi.Controllers;
 
-
 public class PostController : BaseController
 {
     [HttpPost]
@@ -24,36 +23,82 @@ public class PostController : BaseController
         var response = _mapper.Map<PostResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
+
     [HttpGet("{postId}")]
     [Authorize]
-    public async Task<IActionResult> GetPostById([FromRoute] Guid postId)
+    public async Task<IActionResult> GetPostById([FromRoute] string postId) // TODO: Add Comments and liks to this
     {
         var result = await _mediator.Send(new GetPostByIdQuery
         {
-            Id = postId
+            Id = Guid.Parse(postId),
         });
         var response = _mapper.Map<PostResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
+
     [HttpDelete("DeletePost/{postId}")]
     [Authorize]
-    public async Task<IActionResult> Delete([FromRoute] Guid postId)
+    public async Task<IActionResult> Delete([FromRoute] string postId)
     {
         var result = await _mediator.Send(new DeletePostCommand
         {
-            Id = postId
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            Id = Guid.Parse(postId),
         });
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
+
     [HttpPatch("UpdatePost/{postId}")]
     [Authorize]
-    public async Task<IActionResult> UpdatePost([FromRoute] Guid postId,[FromBody] PostUpdate postUpdate)
+    public async Task<IActionResult> UpdatePost([FromRoute] string postId, [FromBody] PostUpdate postUpdate)
     {
         var result = await _mediator.Send(new UpdatePostCommand
         {
-            Id = postId,
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            Id = Guid.Parse(postId),
             Title = postUpdate.Title,
             Content = postUpdate.Content
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpPost("AddComment/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> AddComment([FromRoute] string postId, [FromBody] AddComment addComment)
+    {
+        var result = await _mediator.Send(new AddCommentCommand
+        {
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            PostId = Guid.Parse(postId),
+            Content = addComment.Content
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpDelete("DeleteComment/{postId}/{commentId}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteComment([FromRoute] string postId, [FromRoute] string commentId)
+    {
+        var result = await _mediator.Send(new DeleteCommentCommand
+        {
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            PostId = Guid.Parse(postId),
+            CommentId = Guid.Parse(commentId)
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpPatch("UpdateComment/{postId}/{commentId}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateComment([FromRoute] string postId,
+        [FromRoute] string commentId, [FromBody] AddComment updateComment)
+    {
+        var result = await _mediator.Send(new UpdateCommentCommand
+        {
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            PostId = Guid.Parse(postId),
+            CommentId = Guid.Parse(commentId),
+            Content = updateComment.Content
         });
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }

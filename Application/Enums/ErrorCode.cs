@@ -14,7 +14,7 @@ public enum ErrorCode
     DatabaseOperationException = 203,
 
 //Application errors should be in the range 300 - 399
-
+    CommentRemovalNotAuthorized = 310,
 
     // User errors should be in the range 306-310
     UserAlreadyExists = 305,
