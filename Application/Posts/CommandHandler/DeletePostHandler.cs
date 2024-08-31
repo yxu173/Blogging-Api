@@ -11,15 +11,14 @@ public class DeletePostHandler(ApplicationDbContext dbContext)
     : IRequestHandler<DeletePostCommand, OperationResult<bool>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
-    private OperationResult<bool> _result = new();
+    private readonly OperationResult<bool> _result = new();
 
     public async Task<OperationResult<bool>> Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
         try
         {
-
             var result = await _dbContext.Posts
-                .Where(x =>x.Id == request.Id)
+                .Where(x => x.Id == request.Id)
                 .Include(x => x.UserId)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
             if (result == null)
@@ -32,12 +31,13 @@ public class DeletePostHandler(ApplicationDbContext dbContext)
             _dbContext.Posts.RemoveRange(result);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
-            return _result;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
+        return _result;
     }
 }

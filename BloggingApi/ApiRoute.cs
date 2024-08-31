@@ -16,6 +16,7 @@ public static class ApiRoute
         public const string UpdateEmail = "UpdateEmail";
         public const string CreateProfile = "CreateProfile";
         public const string UpdateProfile = "UpdateProfile";
+        public const string GetUserProfile = "GetUserProfile";
     }
 
     public static class Post

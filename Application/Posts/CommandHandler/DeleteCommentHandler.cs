@@ -17,40 +17,45 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
     {
         try
         {
-            var post = dbContext.Posts
+            var post = await _dbContext.Posts
                 .Include(x => x.Comments)
-                .Where(x => x.Id == request.PostId);
+                .FirstOrDefaultAsync(x => x.Id == request.PostId
+                    , cancellationToken);
+
             if (post == null)
             {
-                _result.AddError(ErrorCode.NotFound, "Comment Not Found");
+                _result.AddError(ErrorCode.NotFound, "Post Not Found");
                 return _result;
             }
 
-            var comment = post
-                .SelectMany(x => x.Comments)
+
+            var comment = post.Comments
                 .FirstOrDefault(x => x.Id == request.CommentId);
-            
+
             if (comment == null)
             {
                 _result.AddError(ErrorCode.NotFound, "Comment Not Found");
                 return _result;
             }
+
             if (comment.UserId != request.UserId)
             {
-                _result.AddError(ErrorCode.CommentRemovalNotAuthorized, 
+                _result.AddError(ErrorCode.CommentRemovalNotAuthorized,
                     "Comment Removal Not Authorized");
                 return _result;
             }
 
+            post.RemoveCommentCounter();
             _dbContext.Comments.Remove(comment);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
-            return _result;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
+        return _result;
     }
 }

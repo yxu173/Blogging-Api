@@ -12,15 +12,15 @@ public class CreatePostHandler(ApplicationDbContext dbContext)
     private ApplicationDbContext _dbContext = dbContext;
     private OperationResult<Post> _result = new();
 
-    public async Task<OperationResult<Post>> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Post>> Handle(CreatePostCommand request,
+        CancellationToken cancellationToken)
     {
         try
         {
             var post = Post.CreatePost(request.UserId, request.Title, request.Content);
-            await dbContext.AddAsync(post);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.AddAsync(post, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = post;
-            return _result;
         }
         catch (Exception e)
         {

@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using System.Runtime.CompilerServices;
+using Domain.Common;
 using Domain.Exceptions;
 using Domain.Validators;
 

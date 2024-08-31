@@ -15,7 +15,8 @@ public enum ErrorCode
 
 //Application errors should be in the range 300 - 399
     CommentRemovalNotAuthorized = 310,
-
+    AlreadyExists = 311,
+    LikeRemovalNotAuthorized = 312,
     // User errors should be in the range 306-310
     UserAlreadyExists = 305,
     UserDoesNotExist = 306,

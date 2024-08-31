@@ -24,5 +24,6 @@ public class IdentityProfile : Profile
             .ForMember(des => des.EmailAddress,
                 opt =>
                     opt.MapFrom(src => src.Email));
+
     }
 }

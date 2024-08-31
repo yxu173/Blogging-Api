@@ -12,6 +12,7 @@ public class UpdatePostHandler(ApplicationDbContext dbContext)
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private OperationResult<bool> _result = new();
+
     public async Task<OperationResult<bool>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
     {
         try
@@ -26,15 +27,17 @@ public class UpdatePostHandler(ApplicationDbContext dbContext)
                 _result.AddError(ErrorCode.NotFound, "Post Not Found");
                 return _result;
             }
+
             result.UpdatePost(request.Title, request.Content);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
-            return _result;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
+        return _result;
     }
 }

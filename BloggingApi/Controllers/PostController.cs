@@ -2,6 +2,9 @@
 using Application.Posts.Command;
 using Application.Posts.Query;
 using BloggingApi.Contracts.Post;
+using BloggingApi.Contracts.Post.Request;
+using BloggingApi.Contracts.Post.Response;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,13 +35,13 @@ public class PostController : BaseController
         {
             Id = Guid.Parse(postId),
         });
-        var response = _mapper.Map<PostResponse>(result.Payload);
+        var response = PostResponse.CreatePostDto(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
 
     [HttpDelete("DeletePost/{postId}")]
     [Authorize]
-    public async Task<IActionResult> Delete([FromRoute] string postId)
+    public async Task<IActionResult> DeletePost([FromRoute] string postId)
     {
         var result = await _mediator.Send(new DeletePostCommand
         {
@@ -72,7 +75,8 @@ public class PostController : BaseController
             PostId = Guid.Parse(postId),
             Content = addComment.Content
         });
-        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+        var mapped = _mapper.Map<CommentResponse>(result.Payload);
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(mapped);
     }
 
     [HttpDelete("DeleteComment/{postId}/{commentId}")]
@@ -99,6 +103,33 @@ public class PostController : BaseController
             PostId = Guid.Parse(postId),
             CommentId = Guid.Parse(commentId),
             Content = updateComment.Content
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpPost("AddLike/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> AddLike([FromRoute] string postId ,[FromBody] LikeCreate likeCreate)
+    {
+        var result = await _mediator.Send(new AddLikeCommand
+        {
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            PostId = Guid.Parse(postId),
+            InteractionType = likeCreate.InteractionType
+        });
+        var mapped = _mapper.Map<LikeResponse>(result.Payload);
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(mapped);
+    }
+
+    [HttpDelete("DeleteLike/{postId}/{likeId}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteLike([FromRoute] string postId, [FromRoute] string likeId)
+    {
+        var result = await _mediator.Send(new DeleteLikeCommand
+        {
+            UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            PostId = Guid.Parse(postId),
+            LikeId = Guid.Parse(likeId)
         });
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }

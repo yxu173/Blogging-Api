@@ -109,6 +109,9 @@ namespace Infrastracture.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("InteractionType")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("PostId")
                         .HasColumnType("uuid");
 
@@ -130,12 +133,18 @@ namespace Infrastracture.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CommentCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()

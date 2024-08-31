@@ -10,36 +10,28 @@ public sealed class Post : BaseAuditableEntity
     private readonly List<Comment> _comments = new();
     private readonly List<Like> _likes = new();
     private readonly List<PostTag> _postTags = new();
+
     private Post()
     {
         Id = Guid.NewGuid();
         CreatedAt = DateTime.Now.ToUniversalTime();
     }
+
     public Guid UserId { get; private set; }
     public string Title { get; private set; }
     public string Content { get; private set; }
+    public int CommentCount { get; private set; }
+    public int LikeCount { get; private set; }
 
     public User User { get; set; }
 
-    public ICollection<Image> Images
-    {
-        get { return _images; }
-    }
+    public IEnumerable<Image> Images => _images;
 
-    public ICollection<Comment> Comments
-    {
-        get { return _comments; }
-    }
+    public IEnumerable<Comment> Comments => _comments;
 
-    public ICollection<Like> Likes
-    {
-        get { return _likes; }
-    }
+    public IEnumerable<Like> Likes => _likes;
 
-    public ICollection<PostTag> PostTags
-    {
-        get { return _postTags; }
-    }
+    public IEnumerable<PostTag> PostTags => _postTags;
 
     public static Post CreatePost(Guid userId, string title, string content)
     {
@@ -59,11 +51,32 @@ public sealed class Post : BaseAuditableEntity
         throw exception;
     }
 
+    public void AddCommentCounter()
+    {
+        CommentCount++;
+    }
+
+    public void AddLikeCounter()
+    {
+        LikeCount++;
+    }
+
+    public void RemoveCommentCounter()
+    {
+        CommentCount--;
+    }
+
+    public void RemoveLikeCounter()
+    {
+        LikeCount--;
+    }
+
     public void UpdateContent(string content)
     {
         Content = content;
     }
-    public void UpdatePost(string title,string content)
+
+    public void UpdatePost(string title, string content)
     {
         Title = title;
         Content = content;

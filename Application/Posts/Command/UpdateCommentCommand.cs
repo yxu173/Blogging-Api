@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Posts.DTOs;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Posts.Command;

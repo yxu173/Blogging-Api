@@ -147,5 +147,18 @@ public class IdentityController : BaseController
         });
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
+
+    [HttpGet("GetUserProfileById/{userId}")]
+    [Authorize]
+    public async Task<IActionResult> GetUserProfileById([FromRoute] Guid userId)
+    {
+        var result = await _mediator.Send(new GetUserProfileQuery
+        {
+            UserId = userId
+        });
+        var response = _mapper.Map<UserProfileResponse>(result.Payload);
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+    }
+    
     
 }

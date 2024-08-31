@@ -18,6 +18,6 @@ public sealed class IdentityProfile : Profile
         CreateMap<User, UsernameUpdateDto>();
         CreateMap<User, EmailUpdateDto>();
         CreateMap<UsernameUpdateDto, UserUpdate>();
-        
+        CreateMap<UserProfileDto, UserProfileResponse>();
     }
 }
