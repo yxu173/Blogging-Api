@@ -8,6 +8,7 @@ public class LikeDto
     public Guid Id { get; set; }
     public Guid PostId { get; set; }
     public Guid UserId { get; set; }
+    public string? UserName { get; set; }
     public DateTime CreatedAt { get; set; }
     public InteractionType InteractionType { get; set; }
 

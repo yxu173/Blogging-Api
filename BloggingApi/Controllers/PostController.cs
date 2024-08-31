@@ -133,4 +133,25 @@ public class PostController : BaseController
         });
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
+    [HttpGet("GetPostCommentsByPostId/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> GetPostCommentsByPostId([FromRoute] string postId)
+    {
+        var result = await _mediator.Send(new GetPostCommentsByPostIdQuery
+        {
+            PostId = Guid.Parse(postId)
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpGet("GetPostLikesByPostId/{postId}")]
+    [Authorize]
+    public async Task<IActionResult> GetPostLikesByPostId([FromRoute] string postId)
+    {
+        var result = await _mediator.Send(new GetPostLikesByPostIdQuery
+        {
+            PostId = Guid.Parse(postId)
+        });
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
 }
