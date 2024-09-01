@@ -5,20 +5,34 @@ public enum ErrorCode
     NotFound = 404,
     ServerError = 500,
 
-//Validation errors should be in the range 100 - 199
-    ValidationError = 101,
-    FriendRequestValidationError = 102,
+    // Identity error codes should be in the range 300 - 399
+    UserProfileCreationFailed = 300,
+    UserDeletionFailed = 301,
+    UserLoginFailed = 302,
+    UserLogoutFailed = 303,
+    UserRegistrationFailed = 304,
+    UpdateEmailFailed = 305,
+    UpdateUsernameFailed = 306,
+    UpdateUserProfileFailed = 307,
+    UserAlreadyExists = 309,
+    
+    
+    
 
-//Infrastructure errors should be in the range 200-299
-    IdentityCreationFailed = 202,
-    DatabaseOperationException = 203,
+    //Application errors should be in the range 300 - 399
+    UserNotAuthorized = 300,
+    PostNotAuthorized = 301,
+    PostDoesNotExist = 302,
+    PostAlreadyExists = 303,
+    CommentNotAuthorized = 304,
+    CommentDoesNotExist = 305,
+    
 
 //Application errors should be in the range 300 - 399
     CommentRemovalNotAuthorized = 310,
     AlreadyExists = 311,
     LikeRemovalNotAuthorized = 312,
     // User errors should be in the range 306-310
-    UserAlreadyExists = 305,
     UserDoesNotExist = 306,
     IncorrectPassword = 307,
     WrongPassword = 308,

@@ -1,4 +1,6 @@
-﻿using Application.Identity.Commands;
+﻿using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
+using Application.Identity.Commands;
 using Application.Models;
 using Application.Services;
 using MediatR;
@@ -16,12 +18,10 @@ public class LogoutUserHandler(UserServices userService) : IRequestHandler<Logou
         {
             var result = await _userService.LogoutUser();
             _result.Payload = result.IsCompleted;
-            return _result;
         }
-        catch (Exception e)
+        catch (LogoutUserEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.UserLogoutFailed, e.Message);
         }
 
         return _result;

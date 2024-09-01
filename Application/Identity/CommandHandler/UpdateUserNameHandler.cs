@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
 using Application.Identity.DTOs;
 using Application.Models;
@@ -32,12 +33,10 @@ public class UpdateUserNameHandler(UserServices userService, IMapper mapper)
             }
 
             _result.Payload = _mapper.Map<UsernameUpdateDto>(result);
-            return _result;
         }
-        catch (Exception e)
+        catch (UpdateUsernameEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.UpdateUsernameFailed, e.Message);
         }
         return _result;
     }

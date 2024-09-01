@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
 using Application.Identity.DTOs;
 using Application.Models;
@@ -37,17 +38,15 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
             }
             else
             {
-                _result.AddError(ErrorCode.UnknownError,"Invalid login attempt.");
+                _result.AddError(ErrorCode.UnknownError, "Invalid login attempt.");
             }
-
-            return _result;
         }
-        catch (Exception e)
+        catch (LoginUserEx e)
         {
-            Console.WriteLine(e);
-            _result.AddError(ErrorCode.UnknownError, e.Message);
-            return _result;
+            _result.AddError(ErrorCode.UserLoginFailed, e.Message);
         }
+
+        return _result;
     }
 
     private string GetToken(User user)

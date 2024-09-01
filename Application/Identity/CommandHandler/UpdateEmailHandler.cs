@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
 using Application.Identity.DTOs;
 using Application.Models;
@@ -30,12 +31,10 @@ public class UpdateEmailHandler(UserServices userService, IMapper mapper)
             }
 
             _result.Payload = _mapper.Map<EmailUpdateDto>(result);
-            return _result;
         }
-        catch (Exception e)
+        catch (UpdateEmailEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.UpdateEmailFailed, e.Message);
         }
 
         return _result;

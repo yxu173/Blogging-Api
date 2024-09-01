@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
 using Application.Identity.DTOs;
 using Application.Models;
@@ -42,13 +43,11 @@ public class RegisterUserHandler(UserServices userService, JwtService jwtService
             _result.Payload.EmailAddress = user.Email;
             _result.Payload.UserName = user.UserName;
             _result.Payload.Token = GetToken(user);
-            return _result;
         }
-        catch (Exception e)
+        catch (RegisterUserEx e)
         {
-            Console.WriteLine(e);
-            _result.AddError(ErrorCode.UnknownError, e.Message);
-            return _result;
+            e.ValidationErrors.ForEach(x => _result
+                .AddError(ErrorCode.UserRegistrationFailed, e.Message));
         }
 
         return _result;

@@ -1,4 +1,5 @@
-﻿using Application.Identity.DTOs;
+﻿using Application.Enums;
+using Application.Identity.DTOs;
 using Application.Identity.Query;
 using Application.Models;
 using Application.Services;
@@ -15,19 +16,17 @@ public class GetUserByIdHandler(UserServices userService, IMapper mapper)
     private IMapper _mapper = mapper;
     private OperationResult<IdentityUserDto> _result = new();
 
-    public async Task<OperationResult<IdentityUserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<IdentityUserDto>> Handle(GetUserByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        try
+        var user = await _userService.GetUserById(request.Id);
+        if (user == null)
         {
-            var user = await _userService.GetUserById(request.Id);
-            _result.Payload = _mapper.Map<IdentityUserDto>(user);
-            return _result;
+            _result.AddError(ErrorCode.NotFound, "User Not Found");
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+
+        _result.Payload = _mapper.Map<IdentityUserDto>(user);
+
         return _result;
     }
 }

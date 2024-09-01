@@ -12,7 +12,7 @@ public class GetPostLikesByPostIdHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<List<LikeDto>> _result = new();
 
-    public async Task<OperationResult<List<LikeDto>>> Handle(GetPostLikesByPostIdQuery request,
+    public Task<OperationResult<List<LikeDto>>> Handle(GetPostLikesByPostIdQuery request,
         CancellationToken cancellationToken)
     {
         try
@@ -37,6 +37,6 @@ public class GetPostLikesByPostIdHandler(ApplicationDbContext dbContext)
             throw;
         }
 
-        return _result;
+        return Task.FromResult(_result);
     }
 }

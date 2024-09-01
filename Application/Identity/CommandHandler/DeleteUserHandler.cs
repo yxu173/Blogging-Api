@@ -1,4 +1,6 @@
-﻿using Application.Identity.Commands;
+﻿using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
+using Application.Identity.Commands;
 using Application.Models;
 using Application.Services;
 using MediatR;
@@ -16,13 +18,12 @@ public class DeleteUserHandler(UserServices userService) : IRequestHandler<Delet
         {
             var result = await _userService.DeleteUserById(request.Id);
             _result.Payload = result;
-            return _result;
         }
-        catch (Exception e)
+        catch (DeleteUserEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            e.ValidationErrors.ForEach(x => _result.AddError(ErrorCode.UserDeletionFailed, e.Message));
         }
+
         return _result;
     }
 }

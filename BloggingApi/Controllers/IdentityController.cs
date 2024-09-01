@@ -32,16 +32,15 @@ public class IdentityController : BaseController
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
 
-    [HttpGet]
-    [Route(ApiRoute.User.GetByUserName)]
+    [HttpGet("username")]
     [Authorize]
-    public async Task<IActionResult> GetByUserName()
+    public async Task<IActionResult> GetByUserName(string username)
     {
         var result = await _mediator.Send(new GetUserByUserNameQuery
         {
-            UserName = User.Identity?.Name
+            UserName = username
         });
-        var response = _mapper.Map<IdentityResponse>(result.Payload);
+        var response = _mapper.Map<UserProfileResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
 
@@ -98,6 +97,7 @@ public class IdentityController : BaseController
         var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
+
     [HttpPost]
     [Route(ApiRoute.User.UpdateEmail)]
     [Authorize]
@@ -112,23 +112,6 @@ public class IdentityController : BaseController
         });
         var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
-    }
-
-    [HttpPost]
-    [Route(ApiRoute.User.CreateProfile)]
-    [Authorize]
-    public async Task<IActionResult> CreateProfile([FromBody] ProfileDto basicInfo)
-    {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
-        var result = await _mediator.Send(new CreateUserProfileCommand
-        {
-            Id = id,
-            Bio = basicInfo.Bio,
-            ProfileImage = basicInfo.ProfileImage,
-            SocialMediaLinks = basicInfo.SocialMediaLinks
-        });
-        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
     [HttpPost]
@@ -159,6 +142,4 @@ public class IdentityController : BaseController
         var response = _mapper.Map<UserProfileResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
-    
-    
 }

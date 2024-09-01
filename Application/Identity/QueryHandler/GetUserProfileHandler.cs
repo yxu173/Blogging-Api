@@ -27,10 +27,36 @@ public class GetUserProfileHandler(ApplicationDbContext dbContext, IMapper mappe
             var user = await _dbContext.Users
                 .AsNoTracking()
                 .Where(x => x.Id == request.UserId)
-                .Include(x => x.Posts)
-                .ThenInclude(x => x.Comments)
-                .Include(x => x.Posts)
-                .ThenInclude(x => x.Likes)
+                .Select(u => new UserProfileDto
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    ProfileImage = u.BasicInfo.ProfileImage,
+                    Bio = u.BasicInfo.Bio,
+                    SocialMediaLinks = u.BasicInfo.SocialMediaLinks,
+                    Posts = u.Posts.Select(p => new PostDto
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Content = p.Content,
+                        Created = p.CreatedAt,
+                        Comments = p.Comments.Select(c => new CommentDto
+                        {
+                            Id = c.Id,
+                            UserId = c.UserId,
+                            PostId = c.PostId,
+                            Content = c.Content,
+                            CreatedAt = c.CreatedAt
+                        }).ToList(),
+                        Likes = p.Likes.Select(l => new LikeDto
+                        {
+                            Id = l.Id,
+                            UserId = l.UserId,
+                            PostId = l.PostId,
+                            InteractionType = l.InteractionType
+                        }).ToList()
+                    }).ToList()
+                })
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
@@ -39,31 +65,11 @@ public class GetUserProfileHandler(ApplicationDbContext dbContext, IMapper mappe
                 return _result;
             }
 
-            var posts = user.Posts.ToList();
-
-            var comments = new List<Comment>();
-            var likes = new List<Like>();
-
-            foreach (var post in posts)
-            {
-                comments.AddRange(post.Comments);
-                likes.AddRange(post.Likes);
-            }
-
-
-            var userProfileDto = new UserProfileDto
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Posts = _mapper.Map<List<PostDto>>(posts)
-            };
-
-            _result.Payload = userProfileDto;
+            _result.Payload = user;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.ServerError, "An unexpected error occurred");
         }
 
         return _result;

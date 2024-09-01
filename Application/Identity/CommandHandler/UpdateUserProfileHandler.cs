@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
 using Application.Models;
 using Application.Services;
@@ -27,10 +28,6 @@ public class UpdateUserProfileHandler(ApplicationDbContext dbContext, UserServic
                 return _result;
             }
 
-           // request.Bio = user.BasicInfo.Bio;
-           // request.SocialMediaLinks = user.BasicInfo.SocialMediaLinks;
-           // request.ProfileImage = user.BasicInfo.ProfileImage;
-            
             var result = BasicInfo
                 .CreateBasicInfo(request.ProfileImage,
                     request.Bio, request.SocialMediaLinks);
@@ -38,12 +35,10 @@ public class UpdateUserProfileHandler(ApplicationDbContext dbContext, UserServic
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = result;
-            return _result;
         }
-        catch (Exception e)
+        catch (UpdateUserProfileEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.UpdateUserProfileFailed, e.Message);
         }
 
         return _result;
