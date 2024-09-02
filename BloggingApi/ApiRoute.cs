@@ -14,7 +14,6 @@ public static class ApiRoute
         public const string GetById = "GetById";
         public const string UpdateUsername = "UpdateUsername";
         public const string UpdateEmail = "UpdateEmail";
-        public const string CreateProfile = "CreateProfile";
         public const string UpdateProfile = "UpdateProfile";
         public const string GetUserProfile = "GetUserProfile";
     }
@@ -26,4 +25,18 @@ public static class ApiRoute
         public const string UpdatePost = "UpdatePost";
         public const string Delete = "Delete";
     }
+    public static class Tag
+    {
+        public const string CreateTag = "CreateTag";
+        public const string DeleteTag = "DeleteTag";
+        public const string GetAllTags = "GetAllTags";
+        public const string GetPostsByTagName = "GetPostsByTagName";
+    }
+    // public static class Tag
+    // {
+    //     public const string CreateTag = "CreateTag";
+    //     public const string DeleteTag = "DeleteTag";
+    //     public const string GetAllTags = "GetAllTags";
+    //     public const string GetPostsByTagName = "GetPostsByTagName";
+    // }
 }

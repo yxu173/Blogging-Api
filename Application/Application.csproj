@@ -20,4 +20,8 @@
       <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Exceptions\PostExceptions\" />
+    </ItemGroup>
+
 </Project>

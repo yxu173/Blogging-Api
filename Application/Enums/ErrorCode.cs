@@ -16,7 +16,11 @@ public enum ErrorCode
     UpdateUserProfileFailed = 307,
     UserAlreadyExists = 309,
     
-    
+    //Tag errors should be in the range 300 - 399
+    TagCreationFailed = 310,
+    TagDeletionFailed = 311,
+    TagUpdateFailed = 312,
+    TagDoesNotExist = 313,
     
 
     //Application errors should be in the range 300 - 399
