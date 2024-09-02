@@ -3,6 +3,7 @@
 public enum ErrorCode
 {
     NotFound = 404,
+    BadRequest = 400,
     ServerError = 500,
 
     // Identity error codes should be in the range 300 - 399

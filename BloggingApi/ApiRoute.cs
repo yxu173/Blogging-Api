@@ -25,6 +25,7 @@ public static class ApiRoute
         public const string UpdatePost = "UpdatePost";
         public const string Delete = "Delete";
     }
+
     public static class Tag
     {
         public const string CreateTag = "CreateTag";
@@ -32,11 +33,12 @@ public static class ApiRoute
         public const string GetAllTags = "GetAllTags";
         public const string GetPostsByTagName = "GetPostsByTagName";
     }
-    // public static class Tag
-    // {
-    //     public const string CreateTag = "CreateTag";
-    //     public const string DeleteTag = "DeleteTag";
-    //     public const string GetAllTags = "GetAllTags";
-    //     public const string GetPostsByTagName = "GetPostsByTagName";
-    // }
+
+    public static class Follow
+    {
+        public const string AddFollow = "AddFollow/{Id}";
+        public const string RemoveFollow = "RemoveFollow";
+        public const string GetAllFollowers = "GetAllFollowers";
+        public const string GetAllFollowing = "GetAllFollowing";
+    }
 }

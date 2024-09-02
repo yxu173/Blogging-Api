@@ -2,7 +2,11 @@
 
 public class Follow
 {
-    public Guid FollowerId { get; private set; }  // The user who is following another user
+    private Follow()
+    {
+        CreatedAt = DateTime.Now.ToUniversalTime();
+    }
+    public Guid FollowerId { get; private set; }  // The user who is following another user(this user)
     public Guid FollowedId { get; private set; }  // The user who is being followed
     public DateTime CreatedAt { get; private set; }
 
@@ -14,8 +18,7 @@ public class Follow
         return new Follow
         {
             FollowerId = followerId,
-            FollowedId = followedId,
-            CreatedAt = DateTime.Now
+            FollowedId = followedId
         };
     }
 }
