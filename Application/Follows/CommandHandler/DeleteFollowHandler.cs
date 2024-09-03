@@ -21,7 +21,7 @@ public class DeleteFollowHandler(ApplicationDbContext dbContext)
         try
         {
             var follow = await _dbContext.Follows
-                .Where(x => x.FollowerId == request.FollowerId &&
+                .Where(x => x.FollowerId == request.FollowedId &&
                             x.FollowedId == request.FollowedId)
                 .FirstOrDefaultAsync(cancellationToken);
 

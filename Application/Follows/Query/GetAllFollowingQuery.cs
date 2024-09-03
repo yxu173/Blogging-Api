@@ -4,7 +4,4 @@ using MediatR;
 
 namespace Application.Follows.Query;
 
-public class GetAllFollowingQuery : IRequest<OperationResult<List<UserFollowDto>>>
-{
-    public Guid UserId { get; set; }
-}
+public record GetAllFollowingQuery(Guid UserId) : IRequest<OperationResult<List<UserFollowDto>>>;

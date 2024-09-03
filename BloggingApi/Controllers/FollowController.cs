@@ -15,10 +15,10 @@ public class FollowController : BaseController
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new AddFollowCommand
-        {
-            FollowerId = Guid.Parse(userId),
-            FollowedId = Guid.Parse(followedId)
-        });
+        (
+            Guid.Parse(userId),
+            Guid.Parse(followedId)
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
@@ -28,10 +28,10 @@ public class FollowController : BaseController
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new DeleteFollowCommand
-        {
-            FollowerId = Guid.Parse(userId),
-            FollowedId = Guid.Parse(followedId)
-        });
+        (
+            Guid.Parse(userId),
+            Guid.Parse(followedId)
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
@@ -41,9 +41,9 @@ public class FollowController : BaseController
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new GetAllFollowersQuery
-        {
-            UserId = Guid.Parse(userId)
-        });
+        (
+            Guid.Parse(userId)
+        ));
         var response = _mapper.Map<List<FollowResponse>>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -54,9 +54,9 @@ public class FollowController : BaseController
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new GetAllFollowingQuery
-        {
-            UserId = Guid.Parse(userId)
-        });
+        (
+            Guid.Parse(userId)
+        ));
         var response = _mapper.Map<List<FollowResponse>>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }

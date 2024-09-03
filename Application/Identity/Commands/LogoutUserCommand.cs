@@ -3,7 +3,4 @@ using MediatR;
 
 namespace Application.Identity.Commands;
 
-public class LogoutUserCommand : IRequest<OperationResult<bool>>
-{
-    
-}
+public record LogoutUserCommand : IRequest<OperationResult<bool>>;

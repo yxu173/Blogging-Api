@@ -3,8 +3,4 @@ using MediatR;
 
 namespace Application.Follows.Command;
 
-public class AddFollowCommand : IRequest<OperationResult<bool>>
-{
-    public Guid FollowerId { get; set; }
-    public Guid FollowedId { get; set; }
-}
+public record AddFollowCommand(Guid FollowerId, Guid FollowedId) : IRequest<OperationResult<bool>>;

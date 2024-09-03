@@ -25,10 +25,10 @@ public class GetAllFollowingHandler(ApplicationDbContext dbContext, IMapper mapp
                 .AsNoTracking()
                 .Where(x => x.FollowerId == request.UserId)
                 .Select(x => new UserFollowDto
-                {
-                    UserName = x.Followed.UserName,
-                    Bio = x.Followed.BasicInfo.Bio
-                })
+                (
+                    x.Followed.UserName,
+                    x.Followed.BasicInfo.Bio
+                ))
                 .ToListAsync(cancellationToken);
             if (following.Count == 0)
             {

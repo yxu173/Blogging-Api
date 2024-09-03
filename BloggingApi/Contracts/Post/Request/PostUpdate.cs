@@ -1,7 +1,3 @@
 ﻿namespace BloggingApi.Contracts.Post.Request;
 
-public class PostUpdate
-{
-    public string Title { get; set; }
-    public string Content { get; set; }
-}
+public record PostUpdate(string Title, string Content);

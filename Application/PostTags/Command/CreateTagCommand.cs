@@ -5,7 +5,4 @@ using MediatR;
 
 namespace Application.PostTags.Command;
 
-public class CreateTagCommand : IRequest<OperationResult<TagDto>>
-{
-    public required string TagName { get; set; }
-}
+public record CreateTagCommand(string TagName) : IRequest<OperationResult<TagDto>>;

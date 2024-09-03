@@ -4,7 +4,4 @@ using MediatR;
 
 namespace Application.Identity.Query;
 
-public class GetUserByIdQuery : IRequest<OperationResult<IdentityUserDto>>
-{
-    public Guid Id { get; set; }
-}
+public record GetUserByIdQuery(Guid Id) : IRequest<OperationResult<IdentityUserDto>>;

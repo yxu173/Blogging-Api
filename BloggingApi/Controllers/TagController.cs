@@ -16,9 +16,9 @@ public class TagController : BaseController
     public async Task<IActionResult> CreateTag([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new CreateTagCommand
-        {
-            TagName = tagCreate.TagName
-        });
+        (
+            tagCreate.TagName
+        ));
         var response = _mapper.Map<TagResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -28,9 +28,9 @@ public class TagController : BaseController
     public async Task<IActionResult> DeleteTag([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new DeleteTagCommand
-        {
-            TagName = tagCreate.TagName
-        });
+        (
+            tagCreate.TagName
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
@@ -48,9 +48,9 @@ public class TagController : BaseController
     public async Task<IActionResult> GetPostsByTagName([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new GetAllPostsByTagNameQuery
-        {
-            TagName = tagCreate.TagName
-        });
+        (
+            tagCreate.TagName
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 }

@@ -3,8 +3,4 @@ using MediatR;
 
 namespace Application.Posts.Command;
 
-public class DeletePostCommand : IRequest<OperationResult<bool>>
-{
-    public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-}
+public record DeletePostCommand(Guid Id, Guid UserId) : IRequest<OperationResult<bool>>;

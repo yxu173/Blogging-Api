@@ -4,8 +4,4 @@ using MediatR;
 
 namespace Application.Identity.Commands;
 
-public class LoginUserCommand : IRequest<OperationResult<IdentityUserDto>>
-{
-    public required string UserName { get; set; }
-    public required string Password { get; set; }
-}
+public record LoginUserCommand(string UserName, string Password) : IRequest<OperationResult<IdentityUserDto>>;

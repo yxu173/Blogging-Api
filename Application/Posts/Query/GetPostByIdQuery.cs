@@ -5,7 +5,4 @@ using MediatR;
 
 namespace Application.Posts.Query;
 
-public class GetPostByIdQuery : IRequest<OperationResult<PostDto>>
-{
-    public Guid Id { get; set; }
-}
+public record GetPostByIdQuery(Guid Id) : IRequest<OperationResult<PostDto>>;

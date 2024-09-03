@@ -5,9 +5,5 @@ using MediatR;
 
 namespace Application.Posts.Command;
 
-public class AddCommentCommand : IRequest<OperationResult<CommentDto>>
-{
-    public Guid UserId { get; set; }
-    public Guid PostId { get; set; }
-    public required string Content { get; set; }
-}
+public record AddCommentCommand(Guid UserId, Guid PostId, string Content)
+    : IRequest<OperationResult<CommentDto>>;

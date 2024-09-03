@@ -28,13 +28,13 @@ public class GetUserProfileHandler(ApplicationDbContext dbContext, IMapper mappe
                 .AsNoTracking()
                 .Where(x => x.Id == request.UserId)
                 .Select(u => new UserProfileDto
-                {
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    ProfileImage = u.BasicInfo.ProfileImage,
-                    Bio = u.BasicInfo.Bio,
-                    SocialMediaLinks = u.BasicInfo.SocialMediaLinks,
-                    Posts = u.Posts.Select(p => new PostDto
+                (
+                    u.Id,
+                    u.UserName,
+                    u.BasicInfo.ProfileImage,
+                    u.BasicInfo.Bio,
+                    u.BasicInfo.SocialMediaLinks,
+                    u.Posts.Select(p => new PostDto
                     {
                         Id = p.Id,
                         Title = p.Title,
@@ -56,7 +56,7 @@ public class GetUserProfileHandler(ApplicationDbContext dbContext, IMapper mappe
                             InteractionType = l.InteractionType
                         }).ToList()
                     }).ToList()
-                })
+                ))
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)

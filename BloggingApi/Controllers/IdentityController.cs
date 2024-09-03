@@ -37,9 +37,9 @@ public class IdentityController : BaseController
     public async Task<IActionResult> GetByUserName(string username)
     {
         var result = await _mediator.Send(new GetUserByUserNameQuery
-        {
-            UserName = username
-        });
+        (
+            username
+        ));
         var response = _mapper.Map<UserProfileResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -52,9 +52,9 @@ public class IdentityController : BaseController
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new DeleteUserCommand
-        {
-            Id = id
-        });
+        (
+            id
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
@@ -75,9 +75,9 @@ public class IdentityController : BaseController
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new GetUserByIdQuery
-        {
-            Id = id
-        });
+        (
+            id
+        ));
         var response = _mapper.Map<IdentityResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -90,10 +90,10 @@ public class IdentityController : BaseController
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateUserNameCommand
-        {
-            Id = id,
-            UserName = usernameUpdateDto.UserName
-        });
+        (
+            id,
+            usernameUpdateDto.UserName
+        ));
         var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -105,11 +105,11 @@ public class IdentityController : BaseController
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
-        var result = await _mediator.Send(new UpdateEmailCommand()
-        {
-            Id = id,
-            EmailAddress = emailUpdateDto.EmailAddress
-        });
+        var result = await _mediator.Send(new UpdateEmailCommand
+        (
+            id,
+            emailUpdateDto.EmailAddress
+        ));
         var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -122,12 +122,12 @@ public class IdentityController : BaseController
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateUserProfileCommand
-        {
-            Id = id,
-            Bio = basicInfo.Bio,
-            ProfileImage = basicInfo.ProfileImage,
-            SocialMediaLinks = basicInfo.SocialMediaLinks
-        });
+        (
+            id,
+            basicInfo.Bio,
+            basicInfo.ProfileImage,
+            basicInfo.SocialMediaLinks
+        ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
@@ -136,9 +136,9 @@ public class IdentityController : BaseController
     public async Task<IActionResult> GetUserProfileById([FromRoute] Guid userId)
     {
         var result = await _mediator.Send(new GetUserProfileQuery
-        {
-            UserId = userId
-        });
+        (
+            userId
+        ));
         var response = _mapper.Map<UserProfileResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }

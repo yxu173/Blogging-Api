@@ -4,7 +4,4 @@ using MediatR;
 
 namespace Application.PostTags.Command;
 
-public class DeleteTagCommand : IRequest<OperationResult<bool>>
-{
-    public required string TagName { get; set; }
-}
+public record DeleteTagCommand(string TagName) : IRequest<OperationResult<bool>>;

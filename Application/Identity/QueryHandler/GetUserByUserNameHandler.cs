@@ -18,19 +18,20 @@ public class GetUserByUserNameHandler(UserServices userServices, ApplicationDbCo
     private readonly ApplicationDbContext _dbContext = dbContext;
     private OperationResult<UserProfileDto> _result = new();
 
-    public async Task<OperationResult<UserProfileDto>> Handle(GetUserByUserNameQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<UserProfileDto>> Handle(GetUserByUserNameQuery request,
+        CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
             .AsNoTracking()
             .Where(x => x.UserName == request.UserName)
             .Select(u => new UserProfileDto
-            {
-                Id = u.Id,
-                UserName = u.UserName,
-                ProfileImage = u.BasicInfo.ProfileImage,
-                Bio = u.BasicInfo.Bio,
-                SocialMediaLinks = u.BasicInfo.SocialMediaLinks,
-                Posts = u.Posts.Select(p => new PostDto
+            (
+                u.Id,
+                u.UserName,
+                u.BasicInfo.ProfileImage,
+                u.BasicInfo.Bio,
+                u.BasicInfo.SocialMediaLinks,
+                u.Posts.Select(p => new PostDto
                 {
                     Id = p.Id,
                     Title = p.Title,
@@ -52,7 +53,7 @@ public class GetUserByUserNameHandler(UserServices userServices, ApplicationDbCo
                         InteractionType = l.InteractionType
                     }).ToList()
                 }).ToList()
-            })
+            ))
             .FirstOrDefaultAsync(cancellationToken);
 
         _result.Payload = user;

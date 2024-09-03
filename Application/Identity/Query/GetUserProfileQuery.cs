@@ -5,7 +5,4 @@ using MediatR;
 
 namespace Application.Identity.Query;
 
-public class GetUserProfileQuery : IRequest<OperationResult<UserProfileDto>>
-{
-    public Guid UserId { get; set; }
-}
+public record GetUserProfileQuery(Guid UserId) : IRequest<OperationResult<UserProfileDto>>;
