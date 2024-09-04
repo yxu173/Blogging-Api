@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace Infrastracture;
 
 public class ApplicationDbContext(DbContextOptions options)
-    : IdentityDbContext<User,IdentityRole<Guid>,Guid>(options), IDbContext
+    : IdentityDbContext<User,Role,Guid>(options), IDbContext
 {
     private IDbContextTransaction _transaction;
 

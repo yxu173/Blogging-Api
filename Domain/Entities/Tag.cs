@@ -13,10 +13,7 @@ public sealed class Tag : BaseEntity
 
     public string TagName { get; private set; }
 
-    public ICollection<PostTag> PostTags
-    {
-        get { return _postTags; }
-    }
+    public ICollection<PostTag> PostTags => _postTags;
 
     public static Tag CreateTag(string tagName)
     {

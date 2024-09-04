@@ -22,7 +22,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddDomainServices();
 builder.Services.AddControllers();
-builder.Services.AddIdentity<User, IdentityRole<Guid>>()
+builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

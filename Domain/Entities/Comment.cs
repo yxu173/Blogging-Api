@@ -15,8 +15,8 @@ public sealed class Comment : BaseAuditableEntity
         CreatedAt = DateTime.Now.ToUniversalTime();
     }
 
-    public Guid UserId { get; private set; }
-    public Guid PostId { get; private set; }
+    public Guid UserId { get; private init; }
+    public Guid PostId { get; private init; }
     public Guid? ParentCommentId { get; private set; } // Nullable for top-level comments
     public string Content { get; private set; }
 
@@ -24,10 +24,7 @@ public sealed class Comment : BaseAuditableEntity
     public Post Post { get; private set; }
     public Comment ParentComment { get; private set; }
 
-    public ICollection<Comment> Replies
-    {
-        get { return _replies; }
-    }
+    public ICollection<Comment> Replies => _replies;
 
     public static Comment CreateComment(Guid userId, Guid postId, string content)
     {

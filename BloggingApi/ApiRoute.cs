@@ -41,4 +41,12 @@ public static class ApiRoute
         public const string GetAllFollowers = "GetAllFollowers";
         public const string GetAllFollowing = "GetAllFollowing";
     }
+
+    public static class Role
+    {
+        public const string CreateRole = "CreateRole";
+        public const string DeleteRole = "DeleteRole";
+        public const string GetAllRoles = "GetAllRoles";
+        public const string GetRoleByName = "GetRoleByName";
+    }
 }

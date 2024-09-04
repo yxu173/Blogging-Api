@@ -12,13 +12,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.PostTags.QueryHandler;
 
 public class GetAllTagsHandler(ApplicationDbContext dbContext, IMapper mapper)
-    : IRequestHandler<GetAllTagsQuery, OperationResult<List<TagDto>>>
+    : IRequestHandler<GetAllTagsQuery, OperationResult<IReadOnlyList<TagDto>>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly IMapper _mapper = mapper;
-    private OperationResult<List<TagDto>> _result = new();
+    private OperationResult<IReadOnlyList<TagDto>> _result = new();
 
-    public async Task<OperationResult<List<TagDto>>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<IReadOnlyList<TagDto>>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
     {
         try
         {

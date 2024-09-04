@@ -5,4 +5,4 @@ using MediatR;
 namespace Application.Posts.Query;
 
 public record GetPostCommentsByPostIdQuery(Guid PostId)
-    : IRequest<OperationResult<List<CommentDto>>>;
+    : IRequest<OperationResult<IReadOnlyList<CommentDto>>>;

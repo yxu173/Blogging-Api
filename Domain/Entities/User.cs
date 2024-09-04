@@ -15,30 +15,15 @@ public sealed class User : IdentityUser<Guid>
 
     public BasicInfo? BasicInfo { get; private set; }
 
-    public ICollection<Post> Posts
-    {
-        get { return _posts; }
-    }
+    public ICollection<Post> Posts => _posts;
 
-    public ICollection<Like> Likes
-    {
-        get { return _likes; }
-    }
+    public ICollection<Like> Likes => _likes;
 
-    public ICollection<Comment> Comments
-    {
-        get { return _comments; }
-    }
+    public ICollection<Comment> Comments => _comments;
 
-    public ICollection<Follow> Followers
-    {
-        get { return _followers; }
-    } // TODO: Users who follow this user
+    public ICollection<Follow> Followers => _followers; // TODO: Users who follow this user
 
-    public ICollection<Follow> Following
-    {
-        get { return _following; }
-    } // TODO: Users who this user follows
+    public ICollection<Follow> Following => _following; // TODO: Users who this user follows
 
     public static User CreateUser(string username, string email)
     {

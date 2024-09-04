@@ -7,12 +7,12 @@ using MediatR;
 namespace Application.Posts.QueryHandler;
 
 public class GetPostLikesByPostIdHandler(ApplicationDbContext dbContext)
-    : IRequestHandler<GetPostLikesByPostIdQuery, OperationResult<List<LikeDto>>>
+    : IRequestHandler<GetPostLikesByPostIdQuery, OperationResult<IReadOnlyList<LikeDto>>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
-    private readonly OperationResult<List<LikeDto>> _result = new();
+    private readonly OperationResult<IReadOnlyList<LikeDto>> _result = new();
 
-    public Task<OperationResult<List<LikeDto>>> Handle(GetPostLikesByPostIdQuery request,
+    public Task<OperationResult<IReadOnlyList<LikeDto>>> Handle(GetPostLikesByPostIdQuery request,
         CancellationToken cancellationToken)
     {
         try

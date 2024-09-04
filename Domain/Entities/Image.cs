@@ -9,7 +9,7 @@ public sealed class Image : BaseEntity
         Id = Guid.NewGuid();
     }
 
-    public Guid PostId { get; private set; }
+    public Guid PostId { get; private init; }
     public string ImageUrl { get; private set; }
     public string ImageDescription { get; private set; }
 

@@ -11,10 +11,10 @@ public sealed class Like : BaseEntity
         CreatedAt = DateTime.Now.ToUniversalTime();
     }
 
-    public Guid UserId { get; private set; }
-    public Guid PostId { get; private set; }
+    public Guid UserId { get; private init; }
+    public Guid PostId { get; private init; }
     public InteractionType InteractionType { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; private init; }
 
     public User User { get; private set; }
     public Post Post { get; private set; }

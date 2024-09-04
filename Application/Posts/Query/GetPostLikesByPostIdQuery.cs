@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Application.Posts.Query;
 
-public record GetPostLikesByPostIdQuery(Guid PostId) : IRequest<OperationResult<List<LikeDto>>>;
+public record GetPostLikesByPostIdQuery(Guid PostId) : IRequest<OperationResult<IReadOnlyList<LikeDto>>>;

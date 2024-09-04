@@ -17,13 +17,13 @@ public sealed class Post : BaseAuditableEntity
         CreatedAt = DateTime.Now.ToUniversalTime();
     }
 
-    public Guid UserId { get; private set; }
+    public Guid UserId { get; private init; }
     public string Title { get; private set; }
     public string Content { get; private set; }
     public int CommentCount { get; private set; }
     public int LikeCount { get; private set; }
 
-    public User User { get; set; }
+    public User User { get; init; }
 
     public IEnumerable<Image> Images => _images;
 

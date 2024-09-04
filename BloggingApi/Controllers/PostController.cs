@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingApi.Controllers;
 
+[Authorize]
 public class PostController : BaseController
 {
     [HttpPost]
     [Route(ApiRoute.Post.CreatePost)]
-    [Authorize]
     public async Task<IActionResult> CreatePost([FromBody] PostCreate postCreate)
     {
         var result = await _mediator.Send(new CreatePostCommand
@@ -28,7 +28,6 @@ public class PostController : BaseController
     }
 
     [HttpGet("{postId}")]
-    [Authorize]
     public async Task<IActionResult> GetPostById([FromRoute] string postId) // TODO: Add Comments and liks to this
     {
         var result = await _mediator.Send(new GetPostByIdQuery
@@ -40,7 +39,6 @@ public class PostController : BaseController
     }
 
     [HttpDelete("DeletePost/{postId}")]
-    [Authorize]
     public async Task<IActionResult> DeletePost([FromRoute] string postId)
     {
         var result = await _mediator.Send(new DeletePostCommand
@@ -52,7 +50,6 @@ public class PostController : BaseController
     }
 
     [HttpPatch("UpdatePost/{postId}")]
-    [Authorize]
     public async Task<IActionResult> UpdatePost([FromRoute] string postId, [FromBody] PostUpdate postUpdate)
     {
         var result = await _mediator.Send(new UpdatePostCommand
@@ -66,7 +63,6 @@ public class PostController : BaseController
     }
 
     [HttpPost("AddComment/{postId}")]
-    [Authorize]
     public async Task<IActionResult> AddComment([FromRoute] string postId, [FromBody] AddComment addComment)
     {
         var result = await _mediator.Send(new AddCommentCommand
@@ -80,7 +76,6 @@ public class PostController : BaseController
     }
 
     [HttpDelete("DeleteComment/{postId}/{commentId}")]
-    [Authorize]
     public async Task<IActionResult> DeleteComment([FromRoute] string postId, [FromRoute] string commentId)
     {
         var result = await _mediator.Send(new DeleteCommentCommand
@@ -93,7 +88,6 @@ public class PostController : BaseController
     }
 
     [HttpPatch("UpdateComment/{postId}/{commentId}")]
-    [Authorize]
     public async Task<IActionResult> UpdateComment([FromRoute] string postId,
         [FromRoute] string commentId, [FromBody] AddComment updateComment)
     {
@@ -108,7 +102,6 @@ public class PostController : BaseController
     }
 
     [HttpPost("AddLike/{postId}")]
-    [Authorize]
     public async Task<IActionResult> AddLike([FromRoute] string postId, [FromBody] LikeCreate likeCreate)
     {
         var result = await _mediator.Send(new AddLikeCommand
@@ -122,7 +115,6 @@ public class PostController : BaseController
     }
 
     [HttpDelete("DeleteLike/{postId}/{likeId}")]
-    [Authorize]
     public async Task<IActionResult> DeleteLike([FromRoute] string postId, [FromRoute] string likeId)
     {
         var result = await _mediator.Send(new DeleteLikeCommand
@@ -135,7 +127,6 @@ public class PostController : BaseController
     }
 
     [HttpGet("GetPostCommentsByPostId/{postId}")]
-    [Authorize]
     public async Task<IActionResult> GetPostCommentsByPostId([FromRoute] string postId)
     {
         var result = await _mediator.Send(new GetPostCommentsByPostIdQuery
@@ -146,7 +137,6 @@ public class PostController : BaseController
     }
 
     [HttpGet("GetPostLikesByPostId/{postId}")]
-    [Authorize]
     public async Task<IActionResult> GetPostLikesByPostId([FromRoute] string postId)
     {
         var result = await _mediator.Send(new GetPostLikesByPostIdQuery

@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Posts.QueryHandler;
 
-public class GetPostCommentsByPostIdHandler(ApplicationDbContext dbContext)
-    : IRequestHandler<GetPostCommentsByPostIdQuery, OperationResult<List<CommentDto>>>
+public class GetPostCommentsByPostIdHandler(ApplicationDbContext dbContext, IMapper mapper)
+    : IRequestHandler<GetPostCommentsByPostIdQuery, OperationResult<IReadOnlyList<CommentDto>>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
-    private readonly IMapper _mapper;
-    private readonly OperationResult<List<CommentDto>> _result = new();
+    private readonly IMapper _mapper = mapper;
+    private readonly OperationResult<IReadOnlyList<CommentDto>> _result = new();
 
-    public async Task<OperationResult<List<CommentDto>>> Handle(GetPostCommentsByPostIdQuery request,
+    public async Task<OperationResult<IReadOnlyList<CommentDto>>> Handle(GetPostCommentsByPostIdQuery request,
         CancellationToken cancellationToken)
     {
         try

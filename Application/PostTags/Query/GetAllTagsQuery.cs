@@ -5,4 +5,4 @@ using MediatR;
 
 namespace Application.PostTags.Query;
 
-public record GetAllTagsQuery : IRequest<OperationResult<List<TagDto>>>;
+public record GetAllTagsQuery : IRequest<OperationResult<IReadOnlyList<TagDto>>>;

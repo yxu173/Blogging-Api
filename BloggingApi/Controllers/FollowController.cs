@@ -3,10 +3,11 @@ using Application.Follows.Command;
 using Application.Follows.Query;
 using BloggingApi.Contracts.Follow;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingApi.Controllers;
-
+[Authorize]
 public class FollowController : BaseController
 {
     [HttpPost]

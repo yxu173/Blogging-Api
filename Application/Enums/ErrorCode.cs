@@ -23,7 +23,14 @@ public enum ErrorCode
     TagUpdateFailed = 312,
     TagDoesNotExist = 313,
     
-
+    
+    //Role errors should be in the range 300 - 399
+    RoleCreationFailed = 320,
+    RoleAlreadyExists = 321,
+    RoleDoesNotExist = 322,
+    RoleDeletionFailed = 323,
+    RoleNotFound = 324,
+    InvalidRoleName = 325,
     //Application errors should be in the range 300 - 399
     UserNotAuthorized = 300,
     PostNotAuthorized = 301,

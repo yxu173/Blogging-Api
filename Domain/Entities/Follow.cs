@@ -8,7 +8,7 @@ public class Follow
     }
     public Guid FollowerId { get; private set; }  // The user who is following another user(this user)
     public Guid FollowedId { get; private set; }  // The user who is being followed
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; init; }
 
     public User Follower { get; private set; }
     public User Followed { get; private set; }

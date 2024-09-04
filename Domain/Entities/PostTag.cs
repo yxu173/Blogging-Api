@@ -2,9 +2,9 @@
 
 public sealed class PostTag
 {
-    public Guid PostId { get; private set; }
-    public Guid TagId { get; private set; }
+    public Guid PostId { get; private init; }
+    public Guid TagId { get; private init; }
 
-    public Post Post { get; private set; }
-    public Tag Tag { get; private set; }
+    public Post Post { get; private init; }
+    public Tag Tag { get; private init; }
 }

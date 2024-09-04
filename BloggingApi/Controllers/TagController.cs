@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingApi.Controllers;
 
+[Authorize]
 public class TagController : BaseController
 {
     [HttpPost]
     [Route(ApiRoute.Tag.CreateTag)]
-    [Authorize]
     public async Task<IActionResult> CreateTag([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new CreateTagCommand
@@ -24,7 +24,6 @@ public class TagController : BaseController
     }
 
     [HttpDelete(ApiRoute.Tag.DeleteTag)]
-    [Authorize]
     public async Task<IActionResult> DeleteTag([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new DeleteTagCommand
@@ -35,7 +34,6 @@ public class TagController : BaseController
     }
 
     [HttpGet(ApiRoute.Tag.GetAllTags)]
-    [Authorize]
     public async Task<IActionResult> GetAllTags()
     {
         var result = await _mediator.Send(new GetAllTagsQuery());
@@ -44,7 +42,6 @@ public class TagController : BaseController
     }
 
     [HttpGet(ApiRoute.Tag.GetPostsByTagName)]
-    [Authorize]
     public async Task<IActionResult> GetPostsByTagName([FromBody] TagCreate tagCreate)
     {
         var result = await _mediator.Send(new GetAllPostsByTagNameQuery

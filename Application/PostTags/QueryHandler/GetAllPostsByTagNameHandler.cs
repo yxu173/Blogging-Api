@@ -10,13 +10,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.PostTags.QueryHandler;
 
 public class GetAllPostsByTagNameHandler(ApplicationDbContext dbContext) :
-    IRequestHandler<GetAllPostsByTagNameQuery, OperationResult<List<PostDto>>>
+    IRequestHandler<GetAllPostsByTagNameQuery, OperationResult<IReadOnlyList<PostDto>>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    private OperationResult<List<PostDto>> _result = new();
+    private OperationResult<IReadOnlyList<PostDto>> _result = new();
 
-    public async Task<OperationResult<List<PostDto>>> Handle(GetAllPostsByTagNameQuery request,
+    public async Task<OperationResult<IReadOnlyList<PostDto>>> Handle(GetAllPostsByTagNameQuery request,
         CancellationToken cancellationToken)
     {
         try
