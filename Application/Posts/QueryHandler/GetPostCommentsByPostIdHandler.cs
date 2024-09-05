@@ -21,25 +21,24 @@ public class GetPostCommentsByPostIdHandler(ApplicationDbContext dbContext, IMap
     {
         try
         {
-            var comments  = _dbContext.Comments
+            var comments = _dbContext.Comments
                 .Where(x => x.PostId == request.PostId)
-                .Select(comment  =>
+                .Select(comment =>
                     new CommentDto
-                    {
-                        Id = comment.Id,
-                        PostId = comment.PostId,
-                        UserId = comment.UserId,
-                        UserName = comment.User.UserName,
-                        Content = comment.Content,
-                        CreatedAt = comment.CreatedAt
-                    }).ToList();
+                    (
+                        comment.Id,
+                        comment.PostId,
+                        comment.UserId,
+                        comment.User.UserName,
+                        comment.Content,
+                        comment.CreatedAt
+                    )).ToList();
 
             _result.Payload = comments;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.CommentRetrievalFailed, e.Message);
         }
 
         return _result;

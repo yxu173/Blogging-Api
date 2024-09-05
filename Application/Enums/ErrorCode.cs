@@ -23,6 +23,25 @@ public enum ErrorCode
     TagUpdateFailed = 312,
     TagDoesNotExist = 313,
     
+    //Post errors should be in the range 300 - 399
+    PostCreationFailed = 320,
+    PostDeletionFailed = 321,
+    PostUpdateFailed = 322,
+    
+    
+    //Comment errors should be in the range 300 - 399
+    CommentCreationFailed = 330,
+    CommentDeletionFailed = 331,
+    CommentUpdateFailed = 332,
+    CommentRetrievalFailed = 333,
+    
+    
+    //Like errors should be in the range 300 - 399
+    LikeCreationFailed = 340,
+    LikeDeletionFailed = 341,
+    LikeUpdateFailed = 342,
+    LikeRetrievalFailed = 343,
+    
     
     //Role errors should be in the range 300 - 399
     RoleCreationFailed = 320,
@@ -36,8 +55,9 @@ public enum ErrorCode
     PostNotAuthorized = 301,
     PostDoesNotExist = 302,
     PostAlreadyExists = 303,
-    CommentNotAuthorized = 304,
-    CommentDoesNotExist = 305,
+    PostRetrievalFailed = 304,
+    CommentNotAuthorized = 305,
+    CommentDoesNotExist = 306,
     
 
 //Application errors should be in the range 300 - 399

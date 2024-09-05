@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.PostExceptions;
 using Application.Models;
 using Application.Posts.Command;
 using Application.Posts.DTOs;
@@ -15,7 +16,7 @@ public class AddCommentHandler(ApplicationDbContext dbContext, IMapper mapper)
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly IMapper _mapper = mapper;
-    private OperationResult<CommentDto> _result = new();
+    private readonly OperationResult<CommentDto> _result = new();
 
     public async Task<OperationResult<CommentDto>> Handle(AddCommentCommand request,
         CancellationToken cancellationToken)
@@ -37,10 +38,10 @@ public class AddCommentHandler(ApplicationDbContext dbContext, IMapper mapper)
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = _mapper.Map<CommentDto>(comment);
         }
-        catch (Exception e)
+        catch (AddCommentEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            e.ValidationErrors.ForEach(x =>
+                _result.AddError(ErrorCode.CommentCreationFailed, e.Message));
         }
 
         return _result;

@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.PostExceptions;
 using Application.Models;
 using Application.Posts.Command;
 using Infrastracture;
@@ -50,10 +51,9 @@ public class DeleteLikeHandler(ApplicationDbContext dbContext)
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
         }
-        catch (Exception e)
+        catch (LikeDeletionEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            e.ValidationErrors.ForEach(x => _result.AddError(ErrorCode.LikeDeletionFailed, e.Message));
         }
 
         return _result;

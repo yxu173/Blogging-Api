@@ -33,19 +33,37 @@ public class GetAllPostsByTagNameHandler(ApplicationDbContext dbContext) :
                 _result.AddError(ErrorCode.NotFound, "This Tag does not have any posts");
                 return _result;
             }
-            
+
             var postDtos = posts
                 .Select(p => new PostDto
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Content = p.Content,
-                    UserId = p.UserId,
-                    CommentCount = p.CommentCount,
-                    LikeCount = p.LikeCount,
-                    Created = p.CreatedAt
-                })
-                .ToList();
+                (
+                    p.Id,
+                    p.Title,
+                    p.Content,
+                    p.UserId,
+                    p.CreatedAt,
+                    p.CommentCount,
+                    p.LikeCount,
+                    p.Comments.Select(c =>
+                        new CommentDto(
+                            c.Id,
+                            c.PostId,
+                            c.UserId,
+                            c.User.UserName,
+                            c.Content,
+                            c.CreatedAt
+                        )).ToList(),
+                    p.Likes.Select(l =>
+                        new LikeDto
+                        (
+                            l.Id,
+                            l.PostId,
+                            l.UserId,
+                            l.User.UserName,
+                            l.CreatedAt,
+                            l.InteractionType
+                        )).ToList()
+                )).ToList();
             _result.Payload = postDtos;
         }
         catch (GetPostsByTagNameEx e)

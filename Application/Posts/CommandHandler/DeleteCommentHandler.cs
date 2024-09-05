@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.PostExceptions;
 using Application.Models;
 using Application.Posts.Command;
 using Infrastracture;
@@ -11,7 +12,7 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
     : IRequestHandler<DeleteCommentCommand, OperationResult<bool>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
-    private OperationResult<bool> _result = new();
+    private readonly OperationResult<bool> _result = new();
 
     public async Task<OperationResult<bool>> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
     {
@@ -50,10 +51,9 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
         }
-        catch (Exception e)
+        catch (DeleteCommentEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            e.ValidationErrors.ForEach(x => _result.AddError(ErrorCode.CommentDeletionFailed, e.Message));
         }
 
         return _result;

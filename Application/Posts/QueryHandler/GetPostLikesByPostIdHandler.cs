@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Application.Enums;
+using Application.Models;
 using Application.Posts.DTOs;
 using Application.Posts.Query;
 using Infrastracture;
@@ -21,20 +22,20 @@ public class GetPostLikesByPostIdHandler(ApplicationDbContext dbContext)
                 .Where(x => x.PostId == request.PostId)
                 .Select(like =>
                     new LikeDto
-                    {
-                        Id = like.Id,
-                        PostId = like.PostId,
-                        UserId = like.UserId,
-                        UserName = like.User.UserName,
-                        InteractionType = like.InteractionType
-                    }).ToList();
+                    (
+                        like.Id,
+                        like.PostId,
+                        like.UserId,
+                        like.User.UserName,
+                        like.CreatedAt,
+                        like.InteractionType
+                    )).ToList();
 
             _result.Payload = likes;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.LikeRetrievalFailed, e.Message);
         }
 
         return Task.FromResult(_result);

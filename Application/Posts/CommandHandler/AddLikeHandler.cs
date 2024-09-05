@@ -1,4 +1,5 @@
 ﻿using Application.Enums;
+using Application.Exceptions.PostExceptions;
 using Application.Models;
 using Application.Posts.Command;
 using Application.Posts.DTOs;
@@ -15,13 +16,13 @@ public class AddLikeHandler(ApplicationDbContext dbContext, IMapper mapper)
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly IMapper _mapper = mapper;
-    private OperationResult<LikeDto> _result = new();
+    private readonly OperationResult<LikeDto> _result = new();
 
     public async Task<OperationResult<LikeDto>> Handle(AddLikeCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var post = await dbContext.Posts
+            var post = await _dbContext.Posts
                 .Include(x => x.Likes)
                 .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken);
             if (post == null)
@@ -36,17 +37,19 @@ public class AddLikeHandler(ApplicationDbContext dbContext, IMapper mapper)
                 return _result;
             }
 
-            var like = Like.CreateLike(request.UserId, request.PostId, request.InteractionType);
+            var like = Like.CreateLike(request.UserId,
+                request.PostId, request.InteractionType);
 
             post.AddLikeCounter();
             await _dbContext.Likes.AddAsync(like, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
+
             _result.Payload = _mapper.Map<LikeDto>(like);
         }
-        catch (Exception e)
+        catch (AddLikeEx e)
         {
-            Console.WriteLine(e);
-            throw;
+            e.ValidationErrors.ForEach(x => 
+                _result.AddError(ErrorCode.LikeCreationFailed, e.Message));
         }
 
         return _result;

@@ -55,8 +55,7 @@ public class UpdateCommentHandler(ApplicationDbContext dbContext, IMapper mapper
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.CommentUpdateFailed, e.Message);
         }
 
         return _result;

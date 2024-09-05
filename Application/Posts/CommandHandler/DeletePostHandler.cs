@@ -34,8 +34,7 @@ public class DeletePostHandler(ApplicationDbContext dbContext)
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.PostDeletionFailed, e.Message);
         }
 
         return _result;

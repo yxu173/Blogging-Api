@@ -34,8 +34,7 @@ public class UpdatePostHandler(ApplicationDbContext dbContext)
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            _result.AddError(ErrorCode.PostUpdateFailed, e.Message);
         }
 
         return _result;
