@@ -14,6 +14,8 @@ public class UserServices(
     public async Task<IdentityResult> CreateUser(User user, string password)
     {
         var result = await userManager.CreateAsync(user, password);
+        // add role to user
+        await userManager.AddToRoleAsync(user, Enums.Roles.User.ToString());
         await dbContext.SaveChangesAsync();
         return result;
     }

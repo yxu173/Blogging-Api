@@ -16,7 +16,7 @@ namespace Application.Identity.CommandHandler;
 public class RegisterUserHandler(UserServices userService, JwtService jwtService, IMapper mapper)
     : IRequestHandler<RegisterUserCommand, OperationResult<IdentityUserDto>>
 {
-    private OperationResult<IdentityUserDto> _result = new();
+    private readonly OperationResult<IdentityUserDto> _result = new();
 
     public async Task<OperationResult<IdentityUserDto>> Handle(RegisterUserCommand request,
         CancellationToken cancellationToken)
