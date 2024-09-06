@@ -11,11 +11,7 @@ public sealed class Post : BaseAuditableEntity
     private readonly List<Like> _likes = new();
     private readonly List<PostTag> _postTags = new();
 
-    private Post()
-    {
-        Id = Guid.NewGuid();
-        CreatedAt = DateTime.Now.ToUniversalTime();
-    }
+    private Post() { }
 
     public Guid UserId { get; private init; }
     public string Title { get; private set; }
@@ -38,9 +34,11 @@ public sealed class Post : BaseAuditableEntity
         var validator = new PostValidator();
         var validPost = new Post
         {
+            Id = Guid.NewGuid(),
             UserId = userId,
             Title = title,
-            Content = content
+            Content = content,
+            CreatedAt = DateTime.Now.ToUniversalTime()
         };
         var validationResult = validator.Validate(validPost);
         if (validationResult.IsValid) return validPost;

@@ -7,4 +7,7 @@ namespace BloggingApi.Contracts.Identity;
 public record UserProfileResponse(
     Guid Id,
     string UserName,
-    List<PostResponse> Posts);
+    string ProfileImage,
+    string Bio,
+    string SocialMediaLinks,
+    IReadOnlyList<PostResponse> Posts);

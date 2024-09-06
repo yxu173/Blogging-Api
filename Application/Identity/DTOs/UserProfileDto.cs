@@ -9,4 +9,4 @@ public record UserProfileDto(
     string ProfileImage,
     string Bio,
     string SocialMediaLinks,
-    List<PostDto> Posts);
+    IReadOnlyList<PostDto> Posts);

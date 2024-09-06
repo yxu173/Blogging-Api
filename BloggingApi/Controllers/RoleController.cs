@@ -20,8 +20,8 @@ public class RoleController : BaseController
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
     
-    [Route("DeleteRole/{id:guid}")]
     [HttpDelete]
+    [Route("DeleteRole/{id:guid}")]
     public async Task<IActionResult> DeleteRole([FromRoute] Guid id)
     {
         var result = await _mediator.Send(new DeleteRoleCommand
@@ -30,18 +30,18 @@ public class RoleController : BaseController
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
-
-    [Route(ApiRoute.Role.GetAllRoles)]
+    
+   
     [HttpGet]
+    [Route(ApiRoute.Role.GetAllRoles)]
     public async Task<IActionResult> GetAllRoles()
     {
         var result = await _mediator.Send(new GetAllRolesQuery());
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
-
-    [Route(ApiRoute.Role.GetRoleByName)]
-    [HttpGet]
     
+    [HttpGet]
+    [Route(ApiRoute.Role.GetRoleByName)]
     public async Task<IActionResult> GetRoleByName([FromBody] CreateRole createRole)
     {
         var result = await _mediator.Send(new GetRoleByNameQuery

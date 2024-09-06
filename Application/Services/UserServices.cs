@@ -83,6 +83,9 @@ public class UserServices(
     {
         var user = await GetUserById(id);
         if (user == null) return false;
+        var follows = dbContext.Follows
+            .Where(f => f.FollowedId == user.Id || f.FollowerId == user.Id);
+        dbContext.Follows.RemoveRange(follows);
         dbContext.Users.Remove(user);
         await dbContext.SaveChangesAsync();
         return true;

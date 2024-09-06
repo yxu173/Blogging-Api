@@ -49,4 +49,12 @@ public static class ApiRoute
         public const string GetAllRoles = "GetAllRoles";
         public const string GetRoleByName = "GetRoleByName";
     }
+    public static class Report
+    {
+        public const string CreatePostReport = "CreatePostReport";
+        public const string CreateCommentReport = "CreateCommentReport";
+        public const string ResolveReport = "ResolveReport";
+        public const string GetAllReports = "GetAllReports";
+        public const string GetReportById = "GetReportById";
+    }
 }

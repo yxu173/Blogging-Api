@@ -10,14 +10,9 @@ public sealed class IdentityProfile : Profile
 {
     public IdentityProfile()
     {
-        CreateMap<RegisterCreate, RegisterUserCommand>();
         CreateMap<IdentityUserDto, IdentityResponse>();
         CreateMap<User, IdentityUserDto>();
-        CreateMap<LoginCreate, LoginUserCommand>();
         CreateMap<User, IdentityResponse>();
-        CreateMap<User, UsernameUpdateDto>();
-        CreateMap<User, EmailUpdateDto>();
-        CreateMap<UsernameUpdateDto, UserUpdate>();
         CreateMap<UserProfileDto, UserProfileResponse>();
     }
 }

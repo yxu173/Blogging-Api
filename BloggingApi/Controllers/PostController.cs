@@ -34,7 +34,7 @@ public class PostController : BaseController
         (
             Guid.Parse(postId)
         ));
-        var response = PostResponse.CreatePostDto(result.Payload);
+        var response = _mapper.Map<PostResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
 

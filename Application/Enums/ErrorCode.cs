@@ -64,6 +64,14 @@ public enum ErrorCode
     CommentRemovalNotAuthorized = 310,
     AlreadyExists = 311,
     LikeRemovalNotAuthorized = 312,
+    
+    //Report errors should be in the range 300 - 399
+    ReportCreationFailed = 320,
+    GetReportByIdFailed = 321,
+    GetAllReportsFailed = 322,
+    ResolveReportFailed = 323,
+    ReportPostFailed = 324,
+    
     // User errors should be in the range 306-310
     UserDoesNotExist = 306,
     IncorrectPassword = 307,

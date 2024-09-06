@@ -16,6 +16,7 @@ public class DeleteUserHandler(UserServices userService) : IRequestHandler<Delet
     {
         try
         {
+            
             var result = await _userService.DeleteUserById(request.Id);
             _result.Payload = result;
         }

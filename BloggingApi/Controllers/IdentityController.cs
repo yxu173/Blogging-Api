@@ -16,8 +16,12 @@ public class IdentityController : BaseController
     [Route(ApiRoute.User.Register)]
     public async Task<IActionResult> Register([FromBody] RegisterCreate registerCreate)
     {
-        var command = _mapper.Map<RegisterUserCommand>(registerCreate);
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new RegisterUserCommand
+        (
+            registerCreate.UserName,
+            registerCreate.Email,
+            registerCreate.Password
+        ));
         var response = _mapper.Map<IdentityResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -26,8 +30,11 @@ public class IdentityController : BaseController
     [Route(ApiRoute.User.Login)]
     public async Task<IActionResult> Login([FromBody] LoginCreate loginCreate)
     {
-        var command = _mapper.Map<LoginUserCommand>(loginCreate);
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new LoginUserCommand
+        (
+            loginCreate.UserName,
+            loginCreate.Password
+        ));
         var response = _mapper.Map<IdentityResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
@@ -85,33 +92,31 @@ public class IdentityController : BaseController
     [HttpPost]
     [Route(ApiRoute.User.UpdateUsername)]
     [Authorize]
-    public async Task<IActionResult> UpdateUsername([FromBody] UsernameUpdateDto usernameUpdateDto)
+    public async Task<IActionResult> UpdateUsername([FromBody] string username) // TODO: Handle Username
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateUserNameCommand
         (
             id,
-            usernameUpdateDto.UserName
+            username
         ));
-        var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
-        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
     [HttpPost]
     [Route(ApiRoute.User.UpdateEmail)]
     [Authorize]
-    public async Task<IActionResult> UpdateUserEmail([FromBody] EmailUpdateDto emailUpdateDto)
+    public async Task<IActionResult> UpdateUserEmail([FromBody] string email)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier);
         var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateEmailCommand
         (
             id,
-            emailUpdateDto.EmailAddress
+            email
         ));
-        var response = _mapper.Map<UserUpdate>(result.Payload); //TODO: Edit DTO
-        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
     [HttpPost]

@@ -5,4 +5,4 @@ using MediatR;
 namespace Application.Identity.Commands;
 
 public record UpdateEmailCommand(Guid Id, string EmailAddress)
-    : IRequest<OperationResult<EmailUpdateDto>>;
+    : IRequest<OperationResult<bool>>;

@@ -13,7 +13,7 @@ public class GetUserByIdHandler(UserServices userService, IMapper mapper)
     : IRequestHandler<GetUserByIdQuery, OperationResult<IdentityUserDto>>
 {
     private readonly UserServices _userService = userService;
-    private IMapper _mapper = mapper;
+    private readonly IMapper _mapper = mapper;
     private OperationResult<IdentityUserDto> _result = new();
 
     public async Task<OperationResult<IdentityUserDto>> Handle(GetUserByIdQuery request,

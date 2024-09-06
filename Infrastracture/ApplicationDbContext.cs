@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 namespace Infrastracture;
 
 public class ApplicationDbContext(DbContextOptions options)
-    : IdentityDbContext<User,Role,Guid>(options), IDbContext
+    : IdentityDbContext<User, Role, Guid>(options), IDbContext
 {
     private IDbContextTransaction _transaction;
 
@@ -60,21 +60,22 @@ public class ApplicationDbContext(DbContextOptions options)
     {
         await Database.CreateExecutionStrategy().ExecuteAsync(func);
     }
-    
-    public DbSet<Post> Posts { get; set; }
 
-    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Post> Posts { get; init; }
 
-    public DbSet<Like> Likes { get; set; }
+    public DbSet<Comment> Comments { get; init; }
 
-    public DbSet<Image> Images { get; set; }
+    public DbSet<Like> Likes { get; init; }
 
-    public DbSet<Tag> Tags { get; set; }
+    public DbSet<Image> Images { get; init; }
 
-    public DbSet<Follow> Follows { get; set; }
+    public DbSet<Tag> Tags { get; init; }
 
-    public DbSet<PostTag> PostTags { get; set; }
+    public DbSet<Follow> Follows { get; init; }
 
+    public DbSet<PostTag> PostTags { get; init; }
+
+    public DbSet<Report> Reports { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

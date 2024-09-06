@@ -12,18 +12,8 @@ public class IdentityProfile : Profile
             .ForMember(des => des.UserName,
                 opt =>
                     opt.MapFrom(src => src.UserName))
-            .ForMember(des => des.EmailAddress,
+            .ForMember(des => des.Email,
                 opt =>
                     opt.MapFrom(src => src.Email));
-
-        CreateMap<User, UsernameUpdateDto>()
-            .ForMember(des => des.UserName,
-                opt =>
-                    opt.MapFrom(src => src.UserName));
-        CreateMap<User, EmailUpdateDto>()
-            .ForMember(des => des.EmailAddress,
-                opt =>
-                    opt.MapFrom(src => src.Email));
-
     }
 }

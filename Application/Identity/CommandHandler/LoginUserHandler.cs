@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Security.Principal;
 using Application.Enums;
 using Application.Exceptions.IdentityExceptions;
 using Application.Identity.Commands;
@@ -9,7 +8,6 @@ using Application.Services;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Application.Identity.CommandHandler;
 
@@ -19,7 +17,8 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
     private readonly UserServices _userService = userService;
     private readonly JwtService _jwtService = jwtService;
     private readonly IMapper _mapper = mapper;
-    private OperationResult<IdentityUserDto> _result = new();
+    private readonly OperationResult<IdentityUserDto> _result = new();
+
 
     public async Task<OperationResult<IdentityUserDto>> Handle(LoginUserCommand request,
         CancellationToken cancellationToken)
@@ -32,8 +31,6 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
             if (result.Succeeded)
             {
                 _result.Payload = _mapper.Map<IdentityUserDto>(user);
-                _result.Payload.UserName = user.UserName;
-                _result.Payload.EmailAddress = user.Email;
                 _result.Payload.Token = GetToken(user);
             }
             else

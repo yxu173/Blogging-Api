@@ -40,7 +40,7 @@ public class RegisterUserHandler(UserServices userService, JwtService jwtService
             }
 
             _result.Payload = mapper.Map<IdentityUserDto>(user);
-            _result.Payload.EmailAddress = user.Email;
+            _result.Payload.Email = user.Email;
             _result.Payload.UserName = user.UserName;
             _result.Payload.Token = GetToken(user);
         }
