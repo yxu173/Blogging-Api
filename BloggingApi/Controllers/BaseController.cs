@@ -1,4 +1,5 @@
-﻿using Application.Enums;
+﻿using System.Security.Claims;
+using Application.Enums;
 using Application.Models;
 using AutoMapper;
 using BloggingApi.Contracts.Common;
@@ -13,6 +14,7 @@ public class BaseController : ControllerBase
     private IMapper _mapperInstance;
     protected IMediator _mediator => _mediatorInstance ??= HttpContext.RequestServices.GetService<IMediator>();
     protected IMapper _mapper => _mapperInstance ??= HttpContext.RequestServices.GetService<IMapper>();
+    protected Guid UserId => Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
     
     protected ActionResult HandleErrorResponse(List<Error> errors)
     {

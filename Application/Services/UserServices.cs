@@ -14,8 +14,7 @@ public class UserServices(
     public async Task<IdentityResult> CreateUser(User user, string password)
     {
         var result = await userManager.CreateAsync(user, password);
-        // add role to user
-        await userManager.AddToRoleAsync(user, Enums.Roles.User.ToString());
+        await AddRoleToUser(user, Enums.Roles.User.ToString());
         await dbContext.SaveChangesAsync();
         return result;
     }
@@ -24,6 +23,12 @@ public class UserServices(
     {
         return await signInManager
             .PasswordSignInAsync(userName, password, false, false);
+    }
+
+    public async Task<bool> AddRoleToUser(User user, string role)
+    {
+        await userManager.AddToRoleAsync(user, role);
+        return true;
     }
 
     public async Task<Task> LogoutUser()

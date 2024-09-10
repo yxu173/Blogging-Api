@@ -9,4 +9,6 @@ public record UserProfileDto(
     string ProfileImage,
     string Bio,
     string SocialMediaLinks,
+    int FollowersCount,
+    int FollowingCount,
     IReadOnlyList<PostDto> Posts);

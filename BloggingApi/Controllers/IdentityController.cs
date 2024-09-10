@@ -56,11 +56,9 @@ public class IdentityController : BaseController
     [Authorize]
     public async Task<IActionResult> DeleteById()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new DeleteUserCommand
         (
-            id
+            UserId
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
@@ -74,31 +72,14 @@ public class IdentityController : BaseController
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
-    [HttpGet]
-    [Route(ApiRoute.User.GetById)]
-    [Authorize]
-    public async Task<IActionResult> GetById()
-    {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
-        var result = await _mediator.Send(new GetUserByIdQuery
-        (
-            id
-        ));
-        var response = _mapper.Map<IdentityResponse>(result.Payload);
-        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
-    }
-
     [HttpPost]
     [Route(ApiRoute.User.UpdateUsername)]
     [Authorize]
     public async Task<IActionResult> UpdateUsername([FromBody] string username) // TODO: Handle Username
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateUserNameCommand
         (
-            id,
+            UserId,
             username
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -109,11 +90,9 @@ public class IdentityController : BaseController
     [Authorize]
     public async Task<IActionResult> UpdateUserEmail([FromBody] string email)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateEmailCommand
         (
-            id,
+            UserId,
             email
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -124,11 +103,9 @@ public class IdentityController : BaseController
     [Authorize]
     public async Task<IActionResult> UpdateProfile([FromBody] ProfileDto basicInfo)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-        var id = Guid.Parse(userId.Value);
         var result = await _mediator.Send(new UpdateUserProfileCommand
         (
-            id,
+            UserId,
             basicInfo.Bio,
             basicInfo.ProfileImage,
             basicInfo.SocialMediaLinks

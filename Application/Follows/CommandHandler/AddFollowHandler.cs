@@ -25,22 +25,38 @@ public class AddFollowHandler(ApplicationDbContext dbContext) :
                 _result.AddError(ErrorCode.BadRequest, "You can't follow yourself");
                 return _result;
             }
-            var followCheck = await _dbContext.Follows
-                .Where(x => x.FollowerId == request.FollowerId &&
-                            x.FollowedId == request.FollowedId)
-                .FirstOrDefaultAsync(cancellationToken);
-            if (followCheck != null)
+
+            var alreadyFollowing = await _dbContext.Follows
+                .AnyAsync(x => x.FollowerId == request.FollowerId &&
+                               x.FollowedId == request.FollowedId,
+                    cancellationToken);
+            if (alreadyFollowing)
             {
                 _result.AddError(ErrorCode.AlreadyExists, "You already follow this user");
                 return _result;
             }
+
+            var follower = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == request.FollowerId, cancellationToken);
+
+            var followed = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == request.FollowedId, cancellationToken);
+
+            if (follower == null || followed == null)
+            {
+                _result.AddError(ErrorCode.NotFound, "User not found.");
+                return _result;
+            }
+
+            follower.IncrementFollowingCount();
+            followed.IncrementFollowersCount();
 
             var follow = Follow.CreateFollow(request.FollowerId, request.FollowedId);
             await _dbContext.Follows.AddAsync(follow, cancellationToken);
             var result = await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = true;
         }
-        catch (AddFollowEx e)
+        catch (Exception e)
         {
             _result.AddError(ErrorCode.ServerError, e.Message);
         }

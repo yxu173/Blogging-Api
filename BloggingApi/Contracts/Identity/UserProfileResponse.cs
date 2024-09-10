@@ -10,4 +10,6 @@ public record UserProfileResponse(
     string ProfileImage,
     string Bio,
     string SocialMediaLinks,
+    int FollowersCount,
+    int FollowingCount,
     IReadOnlyList<PostResponse> Posts);

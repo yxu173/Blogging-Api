@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingApi.Controllers;
+
 [Authorize]
 public class FollowController : BaseController
 {
@@ -14,10 +15,9 @@ public class FollowController : BaseController
     [Route("AddFollow/{followedId}")]
     public async Task<IActionResult> AddFollow([FromRoute] string followedId)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new AddFollowCommand
         (
-            Guid.Parse(userId),
+            UserId,
             Guid.Parse(followedId)
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -25,12 +25,11 @@ public class FollowController : BaseController
 
     [HttpDelete]
     [Route("RemoveFollow/{followedId}")]
-    public async Task<IActionResult> RemoveFollow([FromQuery] string followedId)
+    public async Task<IActionResult> RemoveFollow([FromRoute] string followedId)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new DeleteFollowCommand
         (
-            Guid.Parse(userId),
+            UserId,
             Guid.Parse(followedId)
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -40,10 +39,9 @@ public class FollowController : BaseController
     [Route("GetAllFollowers")]
     public async Task<IActionResult> GetAllFollowers()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new GetAllFollowersQuery
         (
-            Guid.Parse(userId)
+            UserId
         ));
         var response = _mapper.Map<List<FollowResponse>>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
@@ -53,10 +51,9 @@ public class FollowController : BaseController
     [Route("GetAllFollowing")]
     public async Task<IActionResult> GetAllFollowing()
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         var result = await _mediator.Send(new GetAllFollowingQuery
         (
-            Guid.Parse(userId)
+            UserId
         ));
         var response = _mapper.Map<List<FollowResponse>>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);

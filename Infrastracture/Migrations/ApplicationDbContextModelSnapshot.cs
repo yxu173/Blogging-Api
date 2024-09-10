@@ -270,6 +270,12 @@ namespace Infrastracture.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("FollowersCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FollowingCount")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 

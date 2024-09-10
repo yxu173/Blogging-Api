@@ -13,7 +13,10 @@ public sealed class User : IdentityUser<Guid>
     private readonly List<Follow> _followers = new();
     private readonly List<Follow> _following = new();
 
+
     public BasicInfo? BasicInfo { get; private set; }
+    public int FollowersCount { get; private set; }
+    public int FollowingCount { get; private set; }
 
     public ICollection<Post> Posts => _posts;
 
@@ -43,7 +46,27 @@ public sealed class User : IdentityUser<Guid>
 
         throw exception;
     }
-    
+
+    public void IncrementFollowersCount()
+    {
+        FollowersCount++;
+    }
+
+    public void DecrementFollowersCount()
+    {
+        FollowersCount--;
+    }
+
+    public void IncrementFollowingCount()
+    {
+        FollowingCount++;
+    }
+
+    public void DecrementFollowingCount()
+    {
+        FollowingCount--;
+    }
+
     public void AddBasicInfo(BasicInfo basicInfo)
     {
         BasicInfo = basicInfo;

@@ -30,4 +30,8 @@
       <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>

@@ -31,6 +31,8 @@ public class GetUserByUserNameHandler(UserServices userServices, ApplicationDbCo
                 u.BasicInfo.ProfileImage,
                 u.BasicInfo.Bio,
                 u.BasicInfo.SocialMediaLinks,
+                u.Followers.Count,
+                u.Following.Count,
                 u.Posts.Select(p => new PostDto
                 (
                     p.Id,

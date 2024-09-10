@@ -19,7 +19,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new CreatePostCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             postCreate.Title,
             postCreate.Content
         ));
@@ -43,7 +43,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new DeletePostCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId)
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -54,7 +54,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new UpdatePostCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             postUpdate.Title,
             postUpdate.Content
@@ -67,7 +67,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new AddCommentCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             addComment.Content
         ));
@@ -80,7 +80,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new DeleteCommentCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             Guid.Parse(commentId)
         ));
@@ -93,7 +93,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new UpdateCommentCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             Guid.Parse(commentId),
             updateComment.Content
@@ -106,7 +106,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new AddLikeCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             likeCreate.InteractionType
         ));
@@ -119,7 +119,7 @@ public class PostController : BaseController
     {
         var result = await _mediator.Send(new DeleteLikeCommand
         (
-            Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
+            UserId,
             Guid.Parse(postId),
             Guid.Parse(likeId)
         ));

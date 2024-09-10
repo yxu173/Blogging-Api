@@ -13,7 +13,7 @@ public class DeleteFollowHandler(ApplicationDbContext dbContext)
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    private OperationResult<bool> _result = new();
+    private readonly OperationResult<bool> _result = new();
 
     public async Task<OperationResult<bool>> Handle(DeleteFollowCommand request
         , CancellationToken cancellationToken)
@@ -21,15 +21,30 @@ public class DeleteFollowHandler(ApplicationDbContext dbContext)
         try
         {
             var follow = await _dbContext.Follows
-                .Where(x => x.FollowerId == request.FollowedId &&
-                            x.FollowedId == request.FollowedId)
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(x => x.FollowerId == request.FollowerId &&
+                                          x.FollowedId == request.FollowedId,
+                    cancellationToken);
 
             if (follow == null)
             {
                 _result.AddError(ErrorCode.NotFound, "Follow not found");
                 return _result;
             }
+
+            var follower = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == request.FollowerId, cancellationToken);
+
+            var followed = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == request.FollowedId, cancellationToken);
+
+            if (follower == null || followed == null)
+            {
+                _result.AddError(ErrorCode.NotFound, "User not found.");
+                return _result;
+            }
+
+            follower.DecrementFollowingCount();
+            followed.DecrementFollowersCount();
 
             _dbContext.Follows.Remove(follow);
             await _dbContext.SaveChangesAsync(cancellationToken);
