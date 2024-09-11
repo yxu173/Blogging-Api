@@ -29,7 +29,7 @@ public class UpdateUserProfileHandler(ApplicationDbContext dbContext, UserServic
             }
 
             var result = BasicInfo
-                .CreateBasicInfo(request.ProfileImage,
+                .CreateBasicInfo(
                     request.Bio, request.SocialMediaLinks);
             user.UpdateBasicInfo(result);
             _dbContext.Update(user);

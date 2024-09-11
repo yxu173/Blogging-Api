@@ -11,11 +11,11 @@ public static class ApiRoute
         public const string Logout = "Logout";
         public const string DeleteUser = "DeleteUser";
         public const string GetByUserName = "GetByUserName";
-        public const string GetById = "GetById";
         public const string UpdateUsername = "UpdateUsername";
         public const string UpdateEmail = "UpdateEmail";
         public const string UpdateProfile = "UpdateProfile";
         public const string GetUserProfile = "GetUserProfile";
+        public const string AddProfilePicture = "AddProfilePicture";
     }
 
     public static class Post

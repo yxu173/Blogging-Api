@@ -13,7 +13,7 @@ public sealed class Image : BaseEntity
     public string ImageUrl { get; private set; }
     public string ImageDescription { get; private set; }
 
-    public Post Post { get; private set; }
+    public Post Post { get; private init; }
 
     public static Image CreateImage(Guid postId, string imageUrl, string imageDescription)
     {

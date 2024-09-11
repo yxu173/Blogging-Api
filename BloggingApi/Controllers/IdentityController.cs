@@ -107,7 +107,6 @@ public class IdentityController : BaseController
         (
             UserId,
             basicInfo.Bio,
-            basicInfo.ProfileImage,
             basicInfo.SocialMediaLinks
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
@@ -123,5 +122,16 @@ public class IdentityController : BaseController
         ));
         var response = _mapper.Map<UserProfileResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
+    }
+
+    [HttpPost]
+    [Route(ApiRoute.User.AddProfilePicture)]
+    public async Task<IActionResult> AddProfilePicture([FromForm] PhotoDto file) // TODO: More Handle Profile Picture
+    {
+        var result = await _mediator.Send(new AddProfilePicCommand(
+            UserId,
+            file.File
+        ));
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 }

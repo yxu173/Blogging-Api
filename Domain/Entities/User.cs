@@ -47,6 +47,7 @@ public sealed class User : IdentityUser<Guid>
         throw exception;
     }
 
+    // TODO: Edit methods  increment and decrement the followers and following counts in only two functions
     public void IncrementFollowersCount()
     {
         FollowersCount++;
@@ -65,6 +66,11 @@ public sealed class User : IdentityUser<Guid>
     public void DecrementFollowingCount()
     {
         FollowingCount--;
+    }
+
+    public void AddProfileImage(string imageUrl)
+    {
+        BasicInfo?.AddProfileImage(imageUrl);
     }
 
     public void AddBasicInfo(BasicInfo basicInfo)
