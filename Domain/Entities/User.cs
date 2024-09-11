@@ -15,6 +15,7 @@ public sealed class User : IdentityUser<Guid>
 
 
     public BasicInfo? BasicInfo { get; private set; }
+    public string? ProfileImage { get; private set; }
     public int FollowersCount { get; private set; }
     public int FollowingCount { get; private set; }
 
@@ -68,9 +69,9 @@ public sealed class User : IdentityUser<Guid>
         FollowingCount--;
     }
 
-    public void AddProfileImage(string imageUrl)
+    public void AddProfileImage(string? imageUrl)
     {
-        BasicInfo?.AddProfileImage(imageUrl);
+        ProfileImage = imageUrl;
     }
 
     public void AddBasicInfo(BasicInfo basicInfo)

@@ -28,7 +28,7 @@ public class GetUserByUserNameHandler(UserServices userServices, ApplicationDbCo
             (
                 u.Id,
                 u.UserName,
-                u.BasicInfo.ProfileImage,
+                u.ProfileImage,
                 u.BasicInfo.Bio,
                 u.BasicInfo.SocialMediaLinks,
                 u.Followers.Count,

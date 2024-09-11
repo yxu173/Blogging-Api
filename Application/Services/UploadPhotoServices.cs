@@ -25,7 +25,16 @@ public class UploadPhotoServices(ApplicationDbContext dbContext, IWebHostEnviron
 
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id == userId);
-        if (user != null) user.AddProfileImage(fileName);
+
+        if (user is { ProfileImage: not null })
+        {
+            var oldFilePath = Path.Combine(path, user.ProfileImage);
+            if (File.Exists(oldFilePath))
+                File.Delete(oldFilePath);
+        }
+
+        user.AddProfileImage(fileName);
+        _dbContext.Update(user);
         await _dbContext.SaveChangesAsync();
 
         return "Profile photo uploaded successfully.";

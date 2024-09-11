@@ -6,7 +6,7 @@ namespace Application.Identity.DTOs;
 public record UserProfileDto(
     Guid Id,
     string UserName,
-    string ProfileImage,
+    string? ProfileImage,
     string Bio,
     string SocialMediaLinks,
     int FollowersCount,

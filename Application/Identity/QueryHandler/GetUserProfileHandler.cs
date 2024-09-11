@@ -31,7 +31,7 @@ public class GetUserProfileHandler(ApplicationDbContext dbContext, IMapper mappe
                 (
                     u.Id,
                     u.UserName,
-                    u.BasicInfo.ProfileImage,
+                    u.ProfileImage,
                     u.BasicInfo.Bio,
                     u.BasicInfo.SocialMediaLinks,
                     u.Followers.Count,

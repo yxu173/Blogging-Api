@@ -299,6 +299,9 @@ namespace Infrastracture.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -542,10 +545,6 @@ namespace Infrastracture.Migrations
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("Bio")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ProfileImage")
                                 .IsRequired()
                                 .HasColumnType("text");
 
