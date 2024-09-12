@@ -69,6 +69,11 @@ public sealed class Post : BaseAuditableEntity
         LikeCount--;
     }
 
+    public void AddImage(Image image)
+    {
+        _images.Add(image);
+    }
+
     public void UpdateContent(string content)
     {
         Content = content;

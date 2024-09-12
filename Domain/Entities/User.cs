@@ -58,7 +58,6 @@ public sealed class User : IdentityUser<Guid>
     {
         FollowersCount--;
     }
-
     public void IncrementFollowingCount()
     {
         FollowingCount++;
@@ -72,11 +71,6 @@ public sealed class User : IdentityUser<Guid>
     public void AddProfileImage(string? imageUrl)
     {
         ProfileImage = imageUrl;
-    }
-
-    public void AddBasicInfo(BasicInfo basicInfo)
-    {
-        BasicInfo = basicInfo;
     }
 
     public void UpdateBasicInfo(BasicInfo basicInfo)

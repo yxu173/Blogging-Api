@@ -4,24 +4,20 @@ namespace Domain.Entities;
 
 public sealed class Image : BaseEntity
 {
-    private Image()
-    {
-        Id = Guid.NewGuid();
-    }
+    private Image() { }
 
     public Guid PostId { get; private init; }
     public string ImageUrl { get; private set; }
-    public string ImageDescription { get; private set; }
 
     public Post Post { get; private init; }
 
-    public static Image CreateImage(Guid postId, string imageUrl, string imageDescription)
+    public static Image CreateImage(Guid postId, string imageUrl)
     {
         return new Image
         {
+            Id = Guid.NewGuid(),
             PostId = postId,
-            ImageUrl = imageUrl,
-            ImageDescription = imageDescription
+            ImageUrl = imageUrl
         };
     }
 }

@@ -1,4 +1,5 @@
-﻿using Infrastracture;
+﻿using Domain.Entities;
+using Infrastracture;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ public class UploadPhotoServices(ApplicationDbContext dbContext, IWebHostEnviron
     }
 
 
-    protected async Task<string> UploadPostPhotos(IFormFile file)
+    public async Task<Image> UploadPostPhoto(IFormFile file, Guid postId)
     {
         if (file == null || file.Length == 0)
             throw new ArgumentException("Invalid file");
@@ -55,6 +56,8 @@ public class UploadPhotoServices(ApplicationDbContext dbContext, IWebHostEnviron
             await file.CopyToAsync(stream);
         }
 
-        return "Profile photo uploaded successfully.";
+        var image = Image.CreateImage(Guid.Empty, fileName);
+
+        return image;
     }
 }

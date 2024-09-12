@@ -15,13 +15,14 @@ public class PostController : BaseController
 {
     [HttpPost]
     [Route(ApiRoute.Post.CreatePost)]
-    public async Task<IActionResult> CreatePost([FromBody] PostCreate postCreate)
+    public async Task<IActionResult> CreatePost([FromForm] PostCreate postCreate)
     {
         var result = await _mediator.Send(new CreatePostCommand
         (
             UserId,
             postCreate.Title,
-            postCreate.Content
+            postCreate.Content,
+            postCreate.Images
         ));
         var response = _mapper.Map<PostResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
