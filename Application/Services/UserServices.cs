@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using FluentEmail.Core;
 using Infrastracture;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +10,35 @@ namespace Application.Services;
 public class UserServices(
     UserManager<User> userManager,
     ApplicationDbContext dbContext,
-    SignInManager<User> signInManager)
+    SignInManager<User> signInManager,
+    IFluentEmail fluentEmail,
+    EmailVerificationFactory emailVerificationFactory)
 {
     public async Task<IdentityResult> CreateUser(User user, string password)
     {
         var result = await userManager.CreateAsync(user, password);
         await AddRoleToUser(user, Enums.Roles.User.ToString());
+
+        var emailToken = EmailVerificationToken.Create(DateTime.UtcNow.AddDays(1), user.Id);
+        dbContext.EmailVerificationTokens.Add(emailToken);
+
         await dbContext.SaveChangesAsync();
+        var verificationLink = emailVerificationFactory
+            .GenerateEmailVerificationLink(emailToken);
+
+        await fluentEmail
+            .To(user.Email)
+            .Subject("Welcome to Blogging App")
+            .Body($"Click on the link to verify your email: <a href='{verificationLink}'>Verify Email</a>", true)
+            .SendAsync();
         return result;
     }
 
     public async Task<SignInResult> LoginUser(string userName, string password)
     {
+        var user = await GetUserByUserName(userName);
+        if (user == null) return SignInResult.Failed;
+        if (user.EmailConfirmed == false) return SignInResult.Failed;
         return await signInManager
             .PasswordSignInAsync(userName, password, false, false);
     }

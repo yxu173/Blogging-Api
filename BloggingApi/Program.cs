@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Reflection;
 using Application;
 using Application.Services;
@@ -21,7 +22,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blogging App", Version = "v1" });
 
     // Configure Swagger to use the token
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -54,12 +55,28 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddDomainServices();
 builder.Services.AddControllers();
-builder.Services.AddIdentity<User, Role>()
+builder.Services.AddIdentity<User, Role>(
+        options =>
+        {
+            options.SignIn.RequireConfirmedAccount = true;
+        })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+// builder.Services
+//     .AddFluentEmail(builder.Configuration["Email:SenderEmail"]
+//         , builder.Configuration["Email:Sender"])
+//     .AddSmtpSender(builder.Configuration["Email:Host"]
+//         , builder.Configuration.GetValue<int>("Email:Port>"));
+builder.Services.AddFluentEmail("mohamedsamir177@outlook.com")
+    .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+    {
+        Port = 587,
+        Credentials = new System.Net.NetworkCredential("mohamedsamir177@outlook.com"
+            , "MoHaM312#@@#"),
+        EnableSsl = true
+    });
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddAuthorization();
 

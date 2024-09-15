@@ -8,12 +8,17 @@ using Application.Models;
 using Application.Services;
 using AutoMapper;
 using Domain.Entities;
+using FluentEmail.Core;
 using Infrastracture;
 using MediatR;
 
 namespace Application.Identity.CommandHandler;
 
-public class RegisterUserHandler(UserServices userService, JwtService jwtService, IMapper mapper)
+public class RegisterUserHandler(
+    UserServices userService,
+    JwtService jwtService,
+    IMapper mapper,
+    IFluentEmail fluentEmail)
     : IRequestHandler<RegisterUserCommand, OperationResult<IdentityUserDto>>
 {
     private readonly OperationResult<IdentityUserDto> _result = new();

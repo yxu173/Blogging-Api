@@ -25,9 +25,9 @@ public sealed class User : IdentityUser<Guid>
 
     public ICollection<Comment> Comments => _comments;
 
-    public ICollection<Follow> Followers => _followers; // TODO: Users who follow this user
+    public ICollection<Follow> Followers => _followers; //  Users who follow this user
 
-    public ICollection<Follow> Following => _following; // TODO: Users who this user follows
+    public ICollection<Follow> Following => _following; //  Users who this user follows
 
     public static User CreateUser(string username, string email)
     {

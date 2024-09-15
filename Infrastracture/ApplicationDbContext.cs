@@ -76,6 +76,8 @@ public class ApplicationDbContext(DbContextOptions options)
     public DbSet<PostTag> PostTags { get; init; }
 
     public DbSet<Report> Reports { get; init; }
+    
+    public DbSet<EmailVerificationToken> EmailVerificationTokens { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

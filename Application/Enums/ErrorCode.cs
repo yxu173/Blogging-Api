@@ -16,6 +16,7 @@ public enum ErrorCode
     UpdateUsernameFailed = 306,
     UpdateUserProfileFailed = 307,
     UserAlreadyExists = 309,
+    TokenExpired = 310,
     
     //Tag errors should be in the range 300 - 399
     TagCreationFailed = 310,

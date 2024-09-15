@@ -3,6 +3,7 @@ using Application.Options;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,8 @@ public static class DependencyInjection
         services.AddScoped<UploadPhotoServices>();
         services.AddScoped<JwtSettings>();
         services.AddScoped<PostServices>();
+        services.AddScoped<EmailVerificationFactory>();
+        services.AddHttpContextAccessor();
         var jwtSettings = new JwtSettings();
         config.Bind(nameof(JwtSettings), jwtSettings);
         var jwtSection = config.GetSection(nameof(JwtSettings));

@@ -25,6 +25,17 @@ public class IdentityController : BaseController
         var response = _mapper.Map<IdentityResponse>(result.Payload);
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(response);
     }
+    [HttpPost]
+    [Route(ApiRoute.User.VerifyEmail)]
+    public async Task<IActionResult> VerifyEmail([FromBody] Guid Token)
+    {
+        var result = await _mediator.Send(new VerificationEmailCommand
+        (
+            Token
+        ));
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+    
 
     [HttpPost]
     [Route(ApiRoute.User.Login)]

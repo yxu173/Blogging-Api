@@ -7,6 +7,7 @@ public static class ApiRoute
     public static class User
     {
         public const string Register = "Register";
+        public const string VerifyEmail = "VerifyEmail";
         public const string Login = "Login";
         public const string Logout = "Logout";
         public const string DeleteUser = "DeleteUser";
