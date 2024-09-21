@@ -74,7 +74,7 @@ builder.Services.AddFluentEmail("mohamedsamir177@outlook.com")
     {
         Port = 587,
         Credentials = new System.Net.NetworkCredential("mohamedsamir177@outlook.com"
-            , "MoHaM312#@@#"),
+            , "??"),
         EnableSsl = true
     });
 builder.Services.AddScoped<JwtService>();
