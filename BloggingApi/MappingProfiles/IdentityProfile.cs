@@ -4,6 +4,7 @@ using AutoMapper;
 using BloggingApi.Contracts.Identity;
 using Domain.Entities;
 
+
 namespace BloggingApi.MappingProfiles;
 
 public sealed class IdentityProfile : Profile

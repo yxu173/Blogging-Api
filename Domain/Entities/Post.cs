@@ -11,7 +11,9 @@ public sealed class Post : BaseAuditableEntity
     private readonly List<Like> _likes = new();
     private readonly List<PostTag> _postTags = new();
 
-    private Post() { }
+    private Post()
+    {
+    }
 
     public Guid UserId { get; private init; }
     public string Title { get; private set; }
@@ -83,5 +85,28 @@ public sealed class Post : BaseAuditableEntity
     {
         Title = title;
         Content = content;
+    }
+
+    public void AddTag(Tag tag)
+    {
+        if (_postTags.Any(pt => pt.TagId == tag.Id))
+        {
+            throw new InvalidOperationException("Tag already exists for this post.");
+        }
+
+        var postTag = PostTag.Create(tag.Id, Id);
+
+        _postTags.Add(postTag);
+    }
+
+    public void RemoveTag(Guid tagId)
+    {
+        var postTag = _postTags.FirstOrDefault(pt => pt.TagId == tagId);
+        if (postTag == null)
+        {
+            throw new InvalidOperationException("Tag does not exist for this post.");
+        }
+
+        _postTags.Remove(postTag);
     }
 }

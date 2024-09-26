@@ -6,9 +6,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{CE85B949-B9C6-43BE-9C49-5A9DC25BBF55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastracture", "Infrastracture\Infrastracture.csproj", "{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7687D9B4-3303-4A12-A97D-C0CBDA3F83FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{01A1D6ED-5985-4AB4-9FE9-0B695FAEC5FE}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FD652C8D-FE71-4298-BCE8-3E1411789C85}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
@@ -35,5 +41,11 @@ Global
 		{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1899C2C1-9FC4-475E-916D-29FB2F8DE1DB} = {01A1D6ED-5985-4AB4-9FE9-0B695FAEC5FE}
+		{8201F517-B86B-4D44-83E1-4ADDEA97A217} = {01A1D6ED-5985-4AB4-9FE9-0B695FAEC5FE}
+		{E14E29E8-E6A1-4528-917B-4B538FDCFE69} = {01A1D6ED-5985-4AB4-9FE9-0B695FAEC5FE}
+		{CE85B949-B9C6-43BE-9C49-5A9DC25BBF55} = {01A1D6ED-5985-4AB4-9FE9-0B695FAEC5FE}
 	EndGlobalSection
 EndGlobal

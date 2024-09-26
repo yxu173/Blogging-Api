@@ -1,9 +1,6 @@
-﻿using System.Security.Claims;
-using Application.Identity.Commands;
-using Application.Identity.DTOs;
+﻿using Application.Identity.Commands;
 using Application.Identity.Query;
 using BloggingApi.Contracts.Identity;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
