@@ -90,7 +90,7 @@ builder
             Port = 587,
             Credentials = new System.Net.NetworkCredential(
                 "mohamedsamir177@outlook.com",
-                "MoHaM312#@@#"
+                "??"
             ),
             EnableSsl = true,
         }
