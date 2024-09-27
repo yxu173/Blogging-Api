@@ -94,7 +94,7 @@ public sealed class Post : BaseAuditableEntity
             throw new InvalidOperationException("Tag already exists for this post.");
         }
 
-        var postTag = PostTag.Create(tag.Id, Id);
+        var postTag = PostTag.Create(tag.Id, Id,this, tag);
 
         _postTags.Add(postTag);
     }

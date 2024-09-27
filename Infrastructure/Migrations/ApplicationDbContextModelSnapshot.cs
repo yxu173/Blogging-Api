@@ -55,7 +55,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.EmailVerificationToken", b =>
@@ -80,7 +80,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EmailVerificationTokens");
+                    b.ToTable("EmailVerificationTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Follow", b =>
@@ -98,7 +98,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("FollowedId");
 
-                    b.ToTable("Follows");
+                    b.ToTable("Follows", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Image", b =>
@@ -118,7 +118,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Like", b =>
@@ -145,7 +145,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Post", b =>
@@ -181,7 +181,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PostTag", b =>
@@ -196,7 +196,7 @@ namespace Infrastracture.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("PostTags");
+                    b.ToTable("PostTags", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -226,7 +226,7 @@ namespace Infrastracture.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -268,7 +268,7 @@ namespace Infrastracture.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -571,7 +571,7 @@ namespace Infrastracture.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.OwnsOne("Domain.Entities.BasicInfo", "BasicInfo", b1 =>
+                    b.OwnsOne("Domain.Entities.User.BasicInfo#Domain.Entities.BasicInfo", "BasicInfo", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");
@@ -586,7 +586,7 @@ namespace Infrastracture.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("AspNetUsers");
+                            b1.ToTable("AspNetUsers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

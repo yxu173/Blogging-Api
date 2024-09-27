@@ -9,12 +9,14 @@ public sealed class PostTag
     public Post Post { get; private init; }
     public Tag Tag { get; private init; }
 
-    public static PostTag Create( Guid postId, Guid tagId)
+    public static PostTag Create( Guid postId, Guid tagId, Post post, Tag tag)
     {
         return new PostTag
         {
             PostId = postId,
-            TagId = tagId
+            TagId = tagId,
+            Post = post,
+            Tag = tag
         };
     }
 

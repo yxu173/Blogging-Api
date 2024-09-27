@@ -10,5 +10,14 @@ public class PostTagConfigration : IEntityTypeConfiguration<PostTag>
     {
         builder
             .HasKey(pt => new { pt.PostId, pt.TagId });
+        builder
+            .HasOne(pt => pt.Post)
+            .WithMany(p => p.PostTags)
+            .HasForeignKey(pt => pt.PostId);
+
+        builder
+            .HasOne(pt => pt.Tag)
+            .WithMany(t => t.PostTags)
+            .HasForeignKey(pt => pt.TagId);
     }
 }

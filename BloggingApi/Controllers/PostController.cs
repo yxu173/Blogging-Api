@@ -146,4 +146,26 @@ public class PostController : BaseController
         ));
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
+
+    [HttpPost("posts/{postId}/tags/{tagId}")]
+    public async Task<IActionResult> AddTagToPost(Guid postId, Guid tagId)
+    {
+        var result = await _mediator.Send(new AddTagToPostCommand
+        (
+            postId,
+            tagId
+        ));
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
+    [HttpDelete("posts/{postId}/tags/{tagId}")]
+    public async Task<IActionResult> RemoveTagToPost(Guid postId, Guid tagId)
+    {
+        var result = await _mediator.Send(new RemoveTagFromPostCommand
+        (
+            postId,
+            tagId
+        ));
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
 }

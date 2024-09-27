@@ -25,6 +25,8 @@ public static class ApiRoute
         public const string GetPostById = "GetPostById";
         public const string UpdatePost = "UpdatePost";
         public const string Delete = "Delete";
+        public const string AddTagToPost = "AddTagToPost";
+        public const string RemoveTagToPost = "RemoveTagToPost";
     }
 
     public static class Tag
