@@ -16,31 +16,34 @@ public class GetPostCommentsByPostIdHandler(ApplicationDbContext dbContext, IMap
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<IReadOnlyList<CommentDto>> _result = new();
 
-    public async Task<OperationResult<IReadOnlyList<CommentDto>>> Handle(GetPostCommentsByPostIdQuery request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<IReadOnlyList<CommentDto>>> Handle(
+        GetPostCommentsByPostIdQuery request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var comments = _dbContext.Comments
-                .Where(x => x.PostId == request.PostId)
-                .Select(comment =>
-                    new CommentDto
-                    (
-                        comment.Id,
-                        comment.PostId,
-                        comment.UserId,
-                        comment.User.UserName,
-                        comment.Content,
-                        comment.CreatedAt
-                    )).ToList();
+            var comments = _dbContext
+                .Comments.Where(x => x.PostId == request.PostId)
+                .Select(comment => new CommentDto(
+                    comment.Id,
+                    comment.PostId,
+                    comment.UserId,
+                    comment.User.UserName,
+                    comment.Content,
+                    comment.CreatedAt
+                ))
+                .ToList();
 
             _result.Payload = comments;
         }
         catch (Exception e)
         {
             _result.AddError(ErrorCode.CommentRetrievalFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

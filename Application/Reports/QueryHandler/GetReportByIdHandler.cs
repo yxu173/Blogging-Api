@@ -14,15 +14,16 @@ public class GetReportByIdHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<Report> _result = new();
 
-    public async Task<OperationResult<Report>> Handle(GetReportByIdQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Report>> Handle(
+        GetReportByIdQuery request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
             var report = await _dbContext
-                .Reports
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.ReportId
-                    , cancellationToken);
+                .Reports.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.ReportId, cancellationToken);
 
             if (report == null)
             {
@@ -35,8 +36,10 @@ public class GetReportByIdHandler(ApplicationDbContext dbContext)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.GetReportByIdFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

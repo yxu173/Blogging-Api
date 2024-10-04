@@ -18,13 +18,15 @@ public class RegisterUserHandler(
     UserServices userService,
     JwtService jwtService,
     IMapper mapper,
-    IFluentEmail fluentEmail)
-    : IRequestHandler<RegisterUserCommand, OperationResult<IdentityUserDto>>
+    IFluentEmail fluentEmail
+) : IRequestHandler<RegisterUserCommand, OperationResult<IdentityUserDto>>
 {
     private readonly OperationResult<IdentityUserDto> _result = new();
 
-    public async Task<OperationResult<IdentityUserDto>> Handle(RegisterUserCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<IdentityUserDto>> Handle(
+        RegisterUserCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -39,8 +41,9 @@ public class RegisterUserHandler(
             var result = await userService.CreateUser(user, request.Password);
             if (!result.Succeeded)
             {
-                result.Errors.ToList().ForEach(error =>
-                    _result.AddError(ErrorCode.UnknownError, error.Description));
+                result
+                    .Errors.ToList()
+                    .ForEach(error => _result.AddError(ErrorCode.UnknownError, error.Description));
                 return _result;
             }
 
@@ -51,8 +54,10 @@ public class RegisterUserHandler(
         }
         catch (RegisterUserEx e)
         {
-            e.ValidationErrors.ForEach(x => _result
-                .AddError(ErrorCode.UserRegistrationFailed, e.Message));
+            e.ValidationErrors.ForEach(x =>
+                _result.AddError(ErrorCode.UserRegistrationFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
@@ -60,13 +65,16 @@ public class RegisterUserHandler(
 
     private string GetToken(User user)
     {
-        var claims = new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        });
+        var claims = new ClaimsIdentity(
+            new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            }
+        );
         var token = jwtService.GenerateToken(claims);
         return token;
     }
 }
+

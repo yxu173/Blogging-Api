@@ -16,8 +16,10 @@ public class CreatePostHandler(ApplicationDbContext dbContext, UploadPhotoServic
     private readonly UploadPhotoServices _uploadService = uploadService;
     private readonly OperationResult<Post> _result = new();
 
-    public async Task<OperationResult<Post>> Handle(CreatePostCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<Post>> Handle(
+        CreatePostCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -26,7 +28,7 @@ public class CreatePostHandler(ApplicationDbContext dbContext, UploadPhotoServic
             foreach (var image in request.Images)
             {
                 var pic = await _uploadService.UploadPostPhoto(image, post.Id);
-                post.AddImage(pic); // TODO: Add more handling for images 
+                post.AddImage(pic); // TODO: Add more handling for images
             }
 
             await _dbContext.AddAsync(post, cancellationToken);
@@ -36,9 +38,12 @@ public class CreatePostHandler(ApplicationDbContext dbContext, UploadPhotoServic
         catch (CreatePostEx e)
         {
             e.ValidationErrors.ForEach(x =>
-                _result.AddError(ErrorCode.PostCreationFailed, e.Message));
+                _result.AddError(ErrorCode.PostCreationFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
     }
 }
+

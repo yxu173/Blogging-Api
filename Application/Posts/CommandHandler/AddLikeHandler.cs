@@ -18,12 +18,15 @@ public class AddLikeHandler(ApplicationDbContext dbContext, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<LikeDto> _result = new();
 
-    public async Task<OperationResult<LikeDto>> Handle(AddLikeCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<LikeDto>> Handle(
+        AddLikeCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var post = await _dbContext.Posts
-                .Include(x => x.Likes)
+            var post = await _dbContext
+                .Posts.Include(x => x.Likes)
                 .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken);
             if (post == null)
             {
@@ -37,8 +40,7 @@ public class AddLikeHandler(ApplicationDbContext dbContext, IMapper mapper)
                 return _result;
             }
 
-            var like = Like.CreateLike(request.UserId,
-                request.PostId, request.InteractionType);
+            var like = Like.CreateLike(request.UserId, request.PostId, request.InteractionType);
 
             post.AddLikeCounter();
             await _dbContext.Likes.AddAsync(like, cancellationToken);
@@ -48,10 +50,13 @@ public class AddLikeHandler(ApplicationDbContext dbContext, IMapper mapper)
         }
         catch (AddLikeEx e)
         {
-            e.ValidationErrors.ForEach(x => 
-                _result.AddError(ErrorCode.LikeCreationFailed, e.Message));
+            e.ValidationErrors.ForEach(x =>
+                _result.AddError(ErrorCode.LikeCreationFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
     }
 }
+

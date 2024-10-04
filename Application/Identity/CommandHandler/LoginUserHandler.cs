@@ -19,9 +19,10 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<IdentityUserDto> _result = new();
 
-
-    public async Task<OperationResult<IdentityUserDto>> Handle(LoginUserCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<IdentityUserDto>> Handle(
+        LoginUserCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -41,6 +42,7 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
         catch (LoginUserEx e)
         {
             _result.AddError(ErrorCode.UserLoginFailed, e.Message);
+            return _result;
         }
 
         return _result;
@@ -48,13 +50,16 @@ public class LoginUserHandler(UserServices userService, JwtService jwtService, I
 
     private string GetToken(User user)
     {
-        var claims = new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        });
+        var claims = new ClaimsIdentity(
+            new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            }
+        );
 
         return _jwtService.GenerateToken(claims);
     }
 }
+

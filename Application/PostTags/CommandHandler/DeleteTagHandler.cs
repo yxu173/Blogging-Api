@@ -9,19 +9,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.PostTags.CommandHandler;
 
-public class DeleteTagHandler(ApplicationDbContext dbContext) : IRequestHandler<DeleteTagCommand, OperationResult<bool>>
+public class DeleteTagHandler(ApplicationDbContext dbContext)
+    : IRequestHandler<DeleteTagCommand, OperationResult<bool>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(DeleteTagCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        DeleteTagCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var tag = await _dbContext.Tags
-                .FirstOrDefaultAsync(x => x.TagName == request.TagName
-                    , cancellationToken);
+            var tag = await _dbContext.Tags.FirstOrDefaultAsync(
+                x => x.TagName == request.TagName,
+                cancellationToken
+            );
             if (tag == null)
             {
                 _result.AddError(ErrorCode.TagDoesNotExist, "Tag does not exist");
@@ -35,8 +39,10 @@ public class DeleteTagHandler(ApplicationDbContext dbContext) : IRequestHandler<
         catch (DeleteTagEx e)
         {
             _result.AddError(ErrorCode.TagDeletionFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

@@ -14,20 +14,27 @@ public class AddProfilePicHandler(UploadPhotoServices profilePicService)
 {
     private readonly UploadPhotoServices _profilePicService = profilePicService;
 
-
-    public async Task<OperationResult<string>> Handle(AddProfilePicCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<string>> Handle(
+        AddProfilePicCommand request,
+        CancellationToken cancellationToken
+    )
     {
         var result = new OperationResult<string>();
         try
         {
-            var response = await _profilePicService.UploadProfilePhoto(request.File, request.UserId);
+            var response = await _profilePicService.UploadProfilePhoto(
+                request.File,
+                request.UserId
+            );
             result.Payload = response;
         }
         catch (Exception e)
         {
             result.AddError(ErrorCode.UnknownError, e.Message);
+            return result;
         }
 
         return result;
     }
 }
+

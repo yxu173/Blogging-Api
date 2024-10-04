@@ -8,21 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Reports.QueryHandler;
 
-public class GetAllReportsHandler(ApplicationDbContext dbContext) : IRequestHandler<GetAllReportsQuery,
-    OperationResult<IReadOnlyList<Report>>>
+public class GetAllReportsHandler(ApplicationDbContext dbContext)
+    : IRequestHandler<GetAllReportsQuery, OperationResult<IReadOnlyList<Report>>>
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<IReadOnlyList<Report>> _result = new();
 
-    public async Task<OperationResult<IReadOnlyList<Report>>> Handle(GetAllReportsQuery request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<IReadOnlyList<Report>>> Handle(
+        GetAllReportsQuery request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var reports = await _dbContext
-                .Reports
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            var reports = await _dbContext.Reports.AsNoTracking().ToListAsync(cancellationToken);
 
             if (reports.Count == 0)
             {
@@ -34,8 +33,11 @@ public class GetAllReportsHandler(ApplicationDbContext dbContext) : IRequestHand
         catch (Exception e)
         {
             _result.AddError(ErrorCode.GetAllReportsFailed, e.Message);
+
+            return _result;
         }
 
         return _result;
     }
 }
+

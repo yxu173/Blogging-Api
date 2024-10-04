@@ -14,12 +14,15 @@ public class DeleteLikeHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(DeleteLikeCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        DeleteLikeCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var post = await _dbContext.Posts
-                .Include(x => x.Likes)
+            var post = await _dbContext
+                .Posts.Include(x => x.Likes)
                 .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken);
             if (post == null)
             {
@@ -42,8 +45,10 @@ public class DeleteLikeHandler(ApplicationDbContext dbContext)
 
             if (like.UserId != request.UserId)
             {
-                _result.AddError(ErrorCode.LikeRemovalNotAuthorized,
-                    "You are not authorized to remove this like");
+                _result.AddError(
+                    ErrorCode.LikeRemovalNotAuthorized,
+                    "You are not authorized to remove this like"
+                );
                 return _result;
             }
             post.RemoveLikeCounter();
@@ -53,9 +58,13 @@ public class DeleteLikeHandler(ApplicationDbContext dbContext)
         }
         catch (LikeDeletionEx e)
         {
-            e.ValidationErrors.ForEach(x => _result.AddError(ErrorCode.LikeDeletionFailed, e.Message));
+            e.ValidationErrors.ForEach(x =>
+                _result.AddError(ErrorCode.LikeDeletionFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
     }
 }
+

@@ -17,8 +17,10 @@ public class CreateRoleHandler(ApplicationDbContext context, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<RoleDto> _result = new();
 
-
-    public async Task<OperationResult<RoleDto>> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<RoleDto>> Handle(
+        CreateRoleCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -43,8 +45,10 @@ public class CreateRoleHandler(ApplicationDbContext context, IMapper mapper)
         catch (RoleCreationEx e)
         {
             _result.AddError(ErrorCode.RoleCreationFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

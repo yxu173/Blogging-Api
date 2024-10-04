@@ -12,13 +12,15 @@ public class VerificationEmailHandler(ApplicationDbContext _dbContext)
 {
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(VerificationEmailCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        VerificationEmailCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var user = await _dbContext.EmailVerificationTokens
-                .Include(x => x.User)
+            var user = await _dbContext
+                .EmailVerificationTokens.Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == request.Token, cancellationToken);
 
             if (user != null)
@@ -39,8 +41,10 @@ public class VerificationEmailHandler(ApplicationDbContext _dbContext)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.UnknownError, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

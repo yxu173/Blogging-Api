@@ -18,7 +18,8 @@ public static class DependencyInjection
         services.AddScoped<UserServices>();
         services.AddScoped<UploadPhotoServices>();
         services.AddScoped<JwtSettings>();
-        services.AddScoped<PostServices>();
+        services.AddScoped<PostServices>();        
+        //services.AddScoped<ElasticsearchService>();
         services.AddScoped<EmailVerificationFactory>();
         services.AddHttpContextAccessor();
         var jwtSettings = new JwtSettings();

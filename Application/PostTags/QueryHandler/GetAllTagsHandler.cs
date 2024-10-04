@@ -18,13 +18,14 @@ public class GetAllTagsHandler(ApplicationDbContext dbContext, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private OperationResult<IReadOnlyList<TagDto>> _result = new();
 
-    public async Task<OperationResult<IReadOnlyList<TagDto>>> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<IReadOnlyList<TagDto>>> Handle(
+        GetAllTagsQuery request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var tags = await _dbContext.Tags
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            var tags = await _dbContext.Tags.AsNoTracking().ToListAsync(cancellationToken);
             if (tags.Count == 0)
             {
                 _result.AddError(ErrorCode.NotFound, "Tags is empty");
@@ -34,8 +35,11 @@ public class GetAllTagsHandler(ApplicationDbContext dbContext, IMapper mapper)
         catch (GetTagsEx e)
         {
             _result.AddError(ErrorCode.UnknownError, "Something went wrong");
+
+            return _result;
         }
 
         return _result;
     }
 }
+

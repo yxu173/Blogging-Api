@@ -17,23 +17,23 @@ public class UpdateCommentHandler(ApplicationDbContext dbContext, IMapper mapper
     private readonly IMapper _mapper = mapper;
     private OperationResult<CommentDto> _result = new();
 
-    public async Task<OperationResult<CommentDto>> Handle(UpdateCommentCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<CommentDto>> Handle(
+        UpdateCommentCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var post = await _dbContext.Posts
-                .Include(x => x.Comments)
-                .FirstOrDefaultAsync(x => x.Id == request.PostId
-                    , cancellationToken);
+            var post = await _dbContext
+                .Posts.Include(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken);
             if (post == null)
             {
                 _result.AddError(ErrorCode.NotFound, "Comment Not Found");
                 return _result;
             }
 
-            var comment = post.Comments
-                .FirstOrDefault(x => x.Id == request.CommentId);
+            var comment = post.Comments.FirstOrDefault(x => x.Id == request.CommentId);
 
             if (comment == null)
             {
@@ -43,12 +43,14 @@ public class UpdateCommentHandler(ApplicationDbContext dbContext, IMapper mapper
 
             if (comment.UserId != request.UserId)
             {
-                _result.AddError(ErrorCode.CommentRemovalNotAuthorized,
-                    "Comment Removal Not Authorized");
+                _result.AddError(
+                    ErrorCode.CommentRemovalNotAuthorized,
+                    "Comment Removal Not Authorized"
+                );
                 return _result;
             }
 
-            comment.UpdateComment(request.Content); 
+            comment.UpdateComment(request.Content);
             _dbContext.Comments.Update(comment);
             await _dbContext.SaveChangesAsync(cancellationToken);
             _result.Payload = _mapper.Map<CommentDto>(comment);
@@ -56,8 +58,10 @@ public class UpdateCommentHandler(ApplicationDbContext dbContext, IMapper mapper
         catch (Exception e)
         {
             _result.AddError(ErrorCode.CommentUpdateFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

@@ -13,14 +13,17 @@ public class ResolveReportHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(ResolveReportCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        ResolveReportCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var report = await _dbContext
-                .Reports
-                .FirstOrDefaultAsync(x => x.Id == request.ReportId
-                    , cancellationToken);
+            var report = await _dbContext.Reports.FirstOrDefaultAsync(
+                x => x.Id == request.ReportId,
+                cancellationToken
+            );
 
             if (report == null)
             {
@@ -36,8 +39,10 @@ public class ResolveReportHandler(ApplicationDbContext dbContext)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.ResolveReportFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

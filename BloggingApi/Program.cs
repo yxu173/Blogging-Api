@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
+using Nest;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,15 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddDomainServices();
 builder.Services.AddControllers();
+/*builder.Services.AddSingleton<IElasticClient>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var settings = new ConnectionSettings(new Uri("http://localhost:9200"))
+        .DefaultIndex("posts")
+        .DisableDirectStreaming()
+        .PrettyJson();
+    return new ElasticClient(settings);
+});*/
 builder
     .Services.AddIdentity<User, Role>(options => { options.SignIn.RequireConfirmedAccount = true; })
     .AddEntityFrameworkStores<ApplicationDbContext>()

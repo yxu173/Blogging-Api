@@ -13,12 +13,15 @@ public class UpdatePostHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        UpdatePostCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var result = await _dbContext.Posts
-                .Where(x => x.Id == request.Id)
+            var result = await _dbContext
+                .Posts.Where(x => x.Id == request.Id)
                 .Include(x => x.UserId)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
@@ -35,8 +38,10 @@ public class UpdatePostHandler(ApplicationDbContext dbContext)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.PostUpdateFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

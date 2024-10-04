@@ -17,13 +17,14 @@ public class UpdateUserNameHandler(UserServices userService, IMapper mapper)
     private IMapper _mapper = mapper;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(UpdateUserNameCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        UpdateUserNameCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var user = await _userService
-                .GetUserById(request.Id);
+            var user = await _userService.GetUserById(request.Id);
             if (user == null)
             {
                 _result.AddError(ErrorCode.NotFound, "User Not Found");
@@ -36,8 +37,7 @@ public class UpdateUserNameHandler(UserServices userService, IMapper mapper)
                 return _result;
             }
 
-            var result = await _userService
-                .UpdateUserName(request.Id, request.UserName);
+            var result = await _userService.UpdateUserName(request.Id, request.UserName);
 
             if (result == null)
             {
@@ -51,8 +51,10 @@ public class UpdateUserNameHandler(UserServices userService, IMapper mapper)
         catch (UpdateUsernameEx e)
         {
             _result.AddError(ErrorCode.UpdateUsernameFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

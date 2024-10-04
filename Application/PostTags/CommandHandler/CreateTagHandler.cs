@@ -17,7 +17,10 @@ public class CreateTagHandler(ApplicationDbContext dbContext, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<TagDto> _result = new();
 
-    public async Task<OperationResult<TagDto>> Handle(CreateTagCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<TagDto>> Handle(
+        CreateTagCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -29,8 +32,10 @@ public class CreateTagHandler(ApplicationDbContext dbContext, IMapper mapper)
         catch (CreateTagEx e)
         {
             _result.AddError(ErrorCode.TagCreationFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

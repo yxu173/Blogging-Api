@@ -15,12 +15,17 @@ public class DeleteRoleHandler(ApplicationDbContext context)
     private readonly ApplicationDbContext _context = context;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        DeleteRoleCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var role = await _context.Roles.FirstOrDefaultAsync(
+                x => x.Id == request.Id,
+                cancellationToken
+            );
 
             if (role == null)
             {
@@ -35,8 +40,10 @@ public class DeleteRoleHandler(ApplicationDbContext context)
         catch (RoleDeletionEx e)
         {
             _result.AddError(ErrorCode.RoleDeletionFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

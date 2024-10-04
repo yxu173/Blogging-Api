@@ -18,14 +18,17 @@ public class AddCommentHandler(ApplicationDbContext dbContext, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<CommentDto> _result = new();
 
-    public async Task<OperationResult<CommentDto>> Handle(AddCommentCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<CommentDto>> Handle(
+        AddCommentCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var post = await _dbContext.Posts
-                .FirstOrDefaultAsync(x => x.Id == request.PostId
-                    , cancellationToken);
+            var post = await _dbContext.Posts.FirstOrDefaultAsync(
+                x => x.Id == request.PostId,
+                cancellationToken
+            );
             if (post == null)
             {
                 _result.AddError(ErrorCode.NotFound, "Post not found");
@@ -41,9 +44,12 @@ public class AddCommentHandler(ApplicationDbContext dbContext, IMapper mapper)
         catch (AddCommentEx e)
         {
             e.ValidationErrors.ForEach(x =>
-                _result.AddError(ErrorCode.CommentCreationFailed, e.Message));
+                _result.AddError(ErrorCode.CommentCreationFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
     }
 }
+

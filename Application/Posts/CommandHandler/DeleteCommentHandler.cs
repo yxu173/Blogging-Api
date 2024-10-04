@@ -14,14 +14,16 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        DeleteCommentCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var post = await _dbContext.Posts
-                .Include(x => x.Comments)
-                .FirstOrDefaultAsync(x => x.Id == request.PostId
-                    , cancellationToken);
+            var post = await _dbContext
+                .Posts.Include(x => x.Comments)
+                .FirstOrDefaultAsync(x => x.Id == request.PostId, cancellationToken);
 
             if (post == null)
             {
@@ -29,9 +31,7 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
                 return _result;
             }
 
-
-            var comment = post.Comments
-                .FirstOrDefault(x => x.Id == request.CommentId);
+            var comment = post.Comments.FirstOrDefault(x => x.Id == request.CommentId);
 
             if (comment == null)
             {
@@ -41,8 +41,10 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
 
             if (comment.UserId != request.UserId)
             {
-                _result.AddError(ErrorCode.CommentRemovalNotAuthorized,
-                    "Comment Removal Not Authorized");
+                _result.AddError(
+                    ErrorCode.CommentRemovalNotAuthorized,
+                    "Comment Removal Not Authorized"
+                );
                 return _result;
             }
 
@@ -53,9 +55,13 @@ public class DeleteCommentHandler(ApplicationDbContext dbContext)
         }
         catch (DeleteCommentEx e)
         {
-            e.ValidationErrors.ForEach(x => _result.AddError(ErrorCode.CommentDeletionFailed, e.Message));
+            e.ValidationErrors.ForEach(x =>
+                _result.AddError(ErrorCode.CommentDeletionFailed, e.Message)
+            );
+            return _result;
         }
 
         return _result;
     }
 }
+

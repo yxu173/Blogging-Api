@@ -16,7 +16,10 @@ public class GetAllRolesHandler(ApplicationDbContext context, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<IReadOnlyList<RoleDto>> _result = new();
 
-    public async Task< OperationResult<IReadOnlyList<RoleDto>>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<IReadOnlyList<RoleDto>>> Handle(
+        GetAllRolesQuery request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -31,8 +34,10 @@ public class GetAllRolesHandler(ApplicationDbContext context, IMapper mapper)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.UnknownError, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

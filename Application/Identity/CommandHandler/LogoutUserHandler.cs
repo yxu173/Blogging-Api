@@ -7,12 +7,16 @@ using MediatR;
 
 namespace Application.Identity.CommandHandler;
 
-public class LogoutUserHandler(UserServices userService) : IRequestHandler<LogoutUserCommand, OperationResult<bool>>
+public class LogoutUserHandler(UserServices userService)
+    : IRequestHandler<LogoutUserCommand, OperationResult<bool>>
 {
     private readonly UserServices _userService = userService;
     private OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(LogoutUserCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        LogoutUserCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -22,8 +26,10 @@ public class LogoutUserHandler(UserServices userService) : IRequestHandler<Logou
         catch (LogoutUserEx e)
         {
             _result.AddError(ErrorCode.UserLogoutFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

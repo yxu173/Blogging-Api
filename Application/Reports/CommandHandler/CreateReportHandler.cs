@@ -13,12 +13,14 @@ public class CreateReportHandler(ApplicationDbContext dbContext)
     private readonly ApplicationDbContext _dbContext = dbContext;
     private readonly OperationResult<Report> _result = new();
 
-    public async Task<OperationResult<Report>> Handle(CreateReportCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Report>> Handle(
+        CreateReportCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var report = Report.Create(request.ContentId,
-                request.ContentType, request.Reason);
+            var report = Report.Create(request.ContentId, request.ContentType, request.Reason);
 
             await _dbContext.Reports.AddAsync(report, cancellationToken);
 
@@ -29,8 +31,10 @@ public class CreateReportHandler(ApplicationDbContext dbContext)
         catch (Exception e)
         {
             _result.AddError(ErrorCode.ReportPostFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+

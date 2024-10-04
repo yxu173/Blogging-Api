@@ -16,13 +16,14 @@ public class UpdateEmailHandler(UserServices userService, IMapper mapper)
     private readonly IMapper _mapper = mapper;
     private readonly OperationResult<bool> _result = new();
 
-    public async Task<OperationResult<bool>> Handle(UpdateEmailCommand request,
-        CancellationToken cancellationToken)
+    public async Task<OperationResult<bool>> Handle(
+        UpdateEmailCommand request,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
-            var user = await _userService
-                .GetUserById(request.Id);
+            var user = await _userService.GetUserById(request.Id);
             if (user == null)
             {
                 _result.AddError(ErrorCode.NotFound, "User Not Found");
@@ -35,8 +36,7 @@ public class UpdateEmailHandler(UserServices userService, IMapper mapper)
                 return _result;
             }
 
-            var result = await _userService
-                .UpdateEmail(request.Id, request.EmailAddress);
+            var result = await _userService.UpdateEmail(request.Id, request.EmailAddress);
             if (result == null)
             {
                 _result.AddError(ErrorCode.NotFound, "User Not Found");
@@ -49,8 +49,10 @@ public class UpdateEmailHandler(UserServices userService, IMapper mapper)
         catch (UpdateEmailEx e)
         {
             _result.AddError(ErrorCode.UpdateEmailFailed, e.Message);
+            return _result;
         }
 
         return _result;
     }
 }
+
